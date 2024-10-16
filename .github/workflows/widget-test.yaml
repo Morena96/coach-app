@@ -1,0 +1,45 @@
+name: Coach App Tests
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+      - name: Add GitHub to known_hosts
+        run: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.2'  # Specify your Flutter version here
+
+      - name: Install dependencies
+        run: |
+          git config --global url."git@github.com:".insteadOf "https://github.com/"
+          flutter pub get
+
+      - name: Run Flutter Gen L10n for localization
+        run: flutter gen-l10n
+      
+      - name: Make run_all_tests.sh executable
+        run: chmod +x scripts/run_all_tests.sh
+
+      - name: Run tests
+        run: sh scripts/run_all_tests.sh

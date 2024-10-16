@@ -1,0 +1,40 @@
+# Dart-specific
+.dart_tool/
+.packages
+pubspec.lock
+
+# IDE-specific
+.idea/
+.vscode/
+
+# Build outputs
+build/
+*.aot
+*.dill
+*.js
+*.js.deps
+*.js.map
+
+# Dependency directories
+.pub-cache/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+
+# Miscellaneous
+*.class
+*.pyc
+*.swp
+.atom/
+.buildlog/
+.history
+.svn/

@@ -1,0 +1,108 @@
+name: coach_app
+description: "Coach App"
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+  faker: ^2.2.0
+  flutter_riverpod: ^3.0.0-dev.3
+  flutter_libserialport: ^0.4.0
+  flutter_svg: ^2.0.10+1
+  go_router: ^14.1.0
+  riverpod_annotation: ^3.0.0-dev.3
+  rxdart: ^0.27.7
+  cached_network_image: ^3.4.1
+  cupertino_icons: ^1.0.6
+  dio: ^5.4.3+1
+  infinite_scroll_pagination: ^4.0.0
+  super_tooltip: ^2.0.8
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  crypto: ^3.0.3
+  equatable: ^2.0.5
+  talker_flutter: ^4.3.4
+  crop_your_image: ^0.7.5
+  image_picker: ^1.0.4
+  file_picker: ^5.3.1
+  path_provider: ^2.0.15
+  dotted_border: ^2.1.0
+  flutter_date_range_picker: ^0.1.1
+
+  domain:
+    path: packages/domain
+  application:
+    path: packages/application
+  binary_data_reader:
+    git:
+      url: git@github.com:5Tul/dart-binary-protocol-reader.git
+      ref: cbd8a980c1f6e40057d99e4f1a5add174a4fab6b
+      # version: ^1.4.2
+  gps_data_analysis:
+    git:
+      url: git@github.com:5Tul/gps-data-analysis.git
+      ref: main
+  form_validator: ^2.1.1
+  hive_generator: ^2.0.1
+  uuid: ^4.4.2
+  random_avatar: ^0.0.8
+  image: ^4.2.0
+  syncfusion_flutter_charts: ^27.1.51
+  syncfusion_flutter_maps: ^27.1.51
+  flutter_map: ^6.0.0
+  latlong2: ^0.9.0
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  analyzer: ^6.4.1
+  build_runner: ^2.4.9
+  connectivity_plus: ^6.0.3
+  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^4.0.0
+  riverpod_generator: ^3.0.0-dev.11
+  riverpod_lint: ^3.0.0-dev.4
+  mockito: ^5.0.0
+  path: ^1.8.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/icons/navbar/
+    - assets/fonts/
+  fonts:
+    - family: Biryani
+      fonts:
+        - asset: assets/fonts/Biryani-Regular.ttf
+        - asset: assets/fonts/Biryani-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Biryani-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Biryani-Bold.ttf
+          weight: 700
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  macos: 
+    generate: true
+    image_path: "assets/images/logo.png"
+  remove_alpha_ios: true
+  image_path_android: "assets/images/logo.png"
+  adaptive_icon_foreground: "assets/images/logo.png"
+  image_path_ios: "assets/images/logo.png"
+
+  

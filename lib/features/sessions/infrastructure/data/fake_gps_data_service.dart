@@ -28,7 +28,8 @@ class FakeGpsDataService {
 
     _isGeneratingData.add(true);
 
-    _dataGenerationTimer = Timer.periodic(const Duration(milliseconds: 100), (_) {
+    _dataGenerationTimer =
+        Timer.periodic(const Duration(milliseconds: 100), (_) {
       _updateSprintTargetIfNeeded();
       _updateVelocityWithJitter();
       _updatePosition();
@@ -63,7 +64,8 @@ class FakeGpsDataService {
       _updateVelocityWithJitter();
       _updatePosition();
 
-      dataList.add(_generateFakeGpsData(timestamp: current.millisecondsSinceEpoch));
+      dataList
+          .add(_generateFakeGpsData(timestamp: current.millisecondsSinceEpoch));
       current = current.add(interval);
     }
 
@@ -76,15 +78,18 @@ class FakeGpsDataService {
       final sprintType = _random.nextInt(3);
       switch (sprintType) {
         case 0:
-          _targetVelocity = _random.nextDouble() * 3 + 2; // Small sprint (2-5 m/s)
+          _targetVelocity =
+              _random.nextDouble() * 3 + 2; // Small sprint (2-5 m/s)
           _sprintDuration = _random.nextInt(20) + 20; // Lasts for 2-4 seconds
           break;
         case 1:
-          _targetVelocity = _random.nextDouble() * 4 + 6; // Medium sprint (6-10 m/s)
+          _targetVelocity =
+              _random.nextDouble() * 4 + 6; // Medium sprint (6-10 m/s)
           _sprintDuration = _random.nextInt(30) + 30; // Lasts for 3-6 seconds
           break;
         case 2:
-          _targetVelocity = _random.nextDouble() * 6 + 12; // Fast sprint (12-18 m/s)
+          _targetVelocity =
+              _random.nextDouble() * 6 + 12; // Fast sprint (12-18 m/s)
           _sprintDuration = _random.nextInt(40) + 20; // Lasts for 2-4 seconds
           break;
       }
@@ -108,7 +113,8 @@ class FakeGpsDataService {
     }
 
     // Add a small random jitter to make the velocity more realistic
-    double jitter = (_random.nextDouble() - 0.5) * 0.5; // Jitter range: -0.25 to +0.25 m/s
+    double jitter =
+        (_random.nextDouble() - 0.5) * 0.5; // Jitter range: -0.25 to +0.25 m/s
     _currentVelocity += jitter;
 
     // Ensure velocity is never negative
@@ -125,7 +131,8 @@ class FakeGpsDataService {
     double direction = _random.nextDouble() * 2 * pi;
 
     // Update latitude and longitude
-    _currentLatitude += velocityDeg * cos(direction) * 0.1; // 0.1 to adjust for 100ms interval
+    _currentLatitude +=
+        velocityDeg * cos(direction) * 0.1; // 0.1 to adjust for 100ms interval
     _currentLongitude += velocityDeg * sin(direction) * 0.1;
 
     // Ensure latitude stays within valid range
@@ -136,9 +143,20 @@ class FakeGpsDataService {
   GpsData _generateFakeGpsData({int? timestamp}) {
     return GpsData(
       velocity: _currentVelocity,
-      accelerationX: List.generate(8, (_) => (_random.nextDouble() * 5) + (_random.nextDouble() - 0.5) * 0.2), // Random acceleration with jitter
-      accelerationY: List.generate(8, (_) => (_random.nextDouble() * 5) + (_random.nextDouble() - 0.5) * 0.2),
-      accelerationZ: List.generate(8, (_) => (_random.nextDouble() * 5) + (_random.nextDouble() - 0.5) * 0.2),
+      accelerationX: List.generate(
+          8,
+          (_) =>
+              (_random.nextDouble() * 5) +
+              (_random.nextDouble() - 0.5) *
+                  0.2), // Random acceleration with jitter
+      accelerationY: List.generate(
+          8,
+          (_) =>
+              (_random.nextDouble() * 5) + (_random.nextDouble() - 0.5) * 0.2),
+      accelerationZ: List.generate(
+          8,
+          (_) =>
+              (_random.nextDouble() * 5) + (_random.nextDouble() - 0.5) * 0.2),
       timestamp: timestamp ?? DateTime.now().millisecondsSinceEpoch,
       latitude: _currentLatitude,
       longitude: _currentLongitude,

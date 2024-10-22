@@ -1,0 +1,38 @@
+include: all_lint_rules.yaml
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    included_file_warning: ignore
+    invalid_annotation_target: ignore
+
+linter:
+  rules:
+    avoid_classes_with_only_static_members: false
+    require_trailing_commas: false
+    avoid_slow_async_io: false
+    directives_ordering: false
+    avoid_print: false
+    unnecessary_library_directive: false
+    use_late_for_private_fields_and_variables: false
+    lines_longer_than_80_chars: false
+    discarded_futures: false
+    one_member_abstracts: false
+    prefer_final_parameters: false
+    always_put_control_body_on_new_line: false
+    cascade_invocations: false
+    prefer_double_quotes: false
+    omit_local_variable_types: false
+    unnecessary_final: false
+    prefer_expression_function_bodies: false
+    always_put_required_named_parameters_first: false
+    flutter_style_todos: false
+    avoid_catches_without_on_clauses: false
+    avoid_annotating_with_dynamic: false
+    always_use_package_imports: false
+    no_default_cases: false
+    avoid_equals_and_hash_code_on_mutable_classes: false
+    sort_pub_dependencies: false
+    prefer_foreach: false

@@ -8,10 +8,7 @@ environment:
 
 dependencies:
   binary_data_reader:
-    git:
-      url: git@github.com:5Tul/dart-binary-protocol-reader.git
-      ref: cbd8a980c1f6e40057d99e4f1a5add174a4fab6b
-      # version: ^1.4.3
+    path: ../binary_data_reader
   equatable: ^2.0.5
   typed_data: ^1.3.2
 

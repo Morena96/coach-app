@@ -1,0 +1,10 @@
+name: example_usage_of_binary_data_reader
+description: >
+  Example usage of the binary_data_reader package.
+version: 1.0.0
+environment:
+  sdk: ^3.3.1
+publish_to: none
+dependencies:
+  binary_data_reader:
+    path: ../

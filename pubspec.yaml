@@ -42,14 +42,10 @@ dependencies:
   application:
     path: packages/application
   binary_data_reader:
-    git:
-      url: git@github.com:5Tul/dart-binary-protocol-reader.git
-      ref: cbd8a980c1f6e40057d99e4f1a5add174a4fab6b
-      # version: ^1.4.2
+    path: packages/binary_data_reader
   gps_data_analysis:
-    git:
-      url: git@github.com:5Tul/gps-data-analysis.git
-      ref: main
+    path: packages/gps_data_analysis
+      
   form_validator: ^2.1.1
   hive_generator: ^2.0.1
   uuid: ^4.4.2

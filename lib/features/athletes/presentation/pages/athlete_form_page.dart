@@ -155,7 +155,7 @@ class _AthleteFormPageState extends ConsumerState<AthleteFormPage>
         // Reload AthletesListPage
         athletesViewModel.refresh();
         if (isEditMode) {
-          // Reload AthleteViewPage
+          // Reload AthleteProfilePage
           ref
               .read(athleteViewModelProvider(widget.athlete!.id).notifier)
               .fetchAthlete(widget.athlete!.id);

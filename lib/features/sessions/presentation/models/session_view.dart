@@ -2,6 +2,7 @@ import 'package:domain/features/sessions/entities/session.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:coach_app/features/athletes/presentation/models/athlete_view.dart';
+import 'package:coach_app/features/athletes/presentation/models/group_view.dart';
 import 'package:coach_app/features/athletes/presentation/models/sport_view.dart';
 
 /// Represents a session for display in the UI.
@@ -21,8 +22,8 @@ class SessionView extends Equatable {
   /// The duration of the session.
   final Duration duration;
 
-  /// The name of the assigned group.
-  final String assignedGroupName;
+  /// The assigned group.
+  final GroupView assignedGroup;
 
   /// The list of athletes selected for this session.
   final List<AthleteView> selectedAthletes;
@@ -36,7 +37,7 @@ class SessionView extends Equatable {
     required this.sport,
     required this.startTime,
     required this.duration,
-    required this.assignedGroupName,
+    required this.assignedGroup,
     required this.selectedAthletes,
     required this.gpsDataCount,
   });
@@ -49,7 +50,7 @@ class SessionView extends Equatable {
       sport: SportView.fromDomain(session.sport),
       startTime: session.startTime,
       duration: session.duration,
-      assignedGroupName: session.assignedGroup.name,
+      assignedGroup: GroupView.fromDomain(session.assignedGroup),
       selectedAthletes: session.selectedAthletes
           .map((athlete) => AthleteView.fromDomain(athlete))
           .toList(),
@@ -64,7 +65,7 @@ class SessionView extends Equatable {
         sport: SportView.empty(),
         startTime: DateTime.now(),
         duration: Duration.zero,
-        assignedGroupName: '',
+        assignedGroup: GroupView.empty(),
         selectedAthletes: const [],
         gpsDataCount: 0,
       );
@@ -76,7 +77,7 @@ class SessionView extends Equatable {
         sport,
         startTime,
         duration,
-        assignedGroupName,
+        assignedGroup,
         selectedAthletes,
         gpsDataCount,
       ];
@@ -85,8 +86,49 @@ class SessionView extends Equatable {
   String toString() {
     return 'SessionView{id: $id, title: $title, sport: $sport, '
         'startTime: $startTime, duration: $duration, '
-        'assignedGroupName: $assignedGroupName, '
+        'assignedGroupName: $assignedGroup, '
         'selectedAthletes: $selectedAthletes, '
         'gpsDataCount: $gpsDataCount}';
+  }
+
+  /// Creates a copy of this SessionView but with the given fields replaced with the new values.
+  SessionView copyWith({
+    String? id,
+    String? title,
+    SportView? sport,
+    DateTime? startTime,
+    Duration? duration,
+    GroupView? assignedGroup,
+    List<AthleteView>? selectedAthletes,
+    int? gpsDataCount,
+  }) {
+    return SessionView(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      sport: sport ?? this.sport,
+      startTime: startTime ?? this.startTime,
+      duration: duration ?? this.duration,
+      assignedGroup: assignedGroup ?? this.assignedGroup,
+      selectedAthletes: selectedAthletes ?? this.selectedAthletes,
+      gpsDataCount: gpsDataCount ?? this.gpsDataCount,
+    );
+  }
+}
+
+extension SessionViewX on SessionView {
+  /// Converts a SessionView to a Session domain entity
+  Session toDomain() {
+    return Session(
+      id: id,
+      title: title,
+      sport: sport.toDomain(),
+      startTime: startTime,
+      duration: duration,
+      assignedGroup: assignedGroup.toDomain(),
+      selectedAthletes: selectedAthletes
+          .map((athleteView) => athleteView.toDomain())
+          .toList(),
+      gpsDataRepresentations: [],
+    );
   }
 }

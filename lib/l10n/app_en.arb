@@ -57,6 +57,7 @@
   "modeCommand": "Mode Command",
   "setConfigRandomData": "Set Config (Random Data)",
   "setAllPodsToLive": "Set All Pods To Live",
+  "setAllPodsToStandby": "Set All Pods To Standby",
   "startCalibration": "Start Calibration",
   "antennaState": "Antenna State: {state}",
   "currentState": "Current State: {state}",
@@ -232,8 +233,30 @@
   "dSession": "D session",
   "recoveryTime": "Recovery time",
   "acceleration": "Acceleration",
-  "sessions": "Sessions"
-  
+  "sessions": "Sessions",
 
+  "errorOnLoadingLogs": "An error occurred while loading logs",
+  "errorOnLoadingMoreLogs": "An error occurred while loading more logs",
+  "noLogs": "No logs found",
+
+  "pleaseEnterValue": "Please enter a value",
+  "pleaseEnterValidNumber": "Please enter a valid number",
+  "masterId": "Master ID",
+  "frequency": "Frequency",
+  "mainFrequency": "Main Frequency",
+  "isMain": "Is Main",
+  "clubId": "Club ID",
+  "submit": "Submit",
+  "setConfig": "Set Config",
+  "sessionTitle": "Session title",
+  "pleaseEnterSessionTitle": "Please enter Session title",
+  "sessionUpdated": "Session updated",
+  "failedToUpdateSession": "Failed to update session",
+  "selectSport": "Select a sport",
+  "mapView": "Map View",
+  "athleteWillBeAddedToTheGroup": "{name} will be added to the group(s)",
+  "selectGroup": "Select group(s)",
+  "athleteAddedToTheGroups": "{name} added successfully",
+  "findGroups": "Find group(s)"
 
   }

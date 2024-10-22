@@ -58,5 +58,51 @@ void main() {
       expect(logEntry.level, equals(LogLevel.debug));
       expect(logEntry.message, equals('Test log message'));
     });
+
+    test('getLogsByPage returns correct logs for each page', () async {
+      // Populate the log with 25 entries
+      for (int i = 0; i < 25; i++) {
+        mockLogger.info('Log $i');
+      }
+
+      // Test first page (0-based index)
+      final firstPage = await mockLogger.getLogsByPage(0, 10);
+      expect(firstPage.length, equals(10));
+      expect(firstPage.first.message, equals('Log 0'));
+      expect(firstPage.last.message, equals('Log 9'));
+
+      // Test second page
+      final secondPage = await mockLogger.getLogsByPage(1, 10);
+      expect(secondPage.length, equals(10));
+      expect(secondPage.first.message, equals('Log 10'));
+      expect(secondPage.last.message, equals('Log 19'));
+
+      // Test last page (partial)
+      final lastPage = await mockLogger.getLogsByPage(2, 10);
+      expect(lastPage.length, equals(5));
+      expect(lastPage.first.message, equals('Log 20'));
+      expect(lastPage.last.message, equals('Log 24'));
+
+      // Test empty page
+      final emptyPage = await mockLogger.getLogsByPage(3, 10);
+      expect(emptyPage.isEmpty, isTrue);
+    });
+
+    test('getLogsByPage handles empty log list', () async {
+      final emptyPage = await mockLogger.getLogsByPage(0, 10);
+      expect(emptyPage.isEmpty, isTrue);
+    });
+
+    test('getLogsByPage handles page size larger than total logs', () async {
+      // Add 5 logs
+      for (int i = 0; i < 5; i++) {
+        mockLogger.info('Log $i');
+      }
+
+      final page = await mockLogger.getLogsByPage(0, 10);
+      expect(page.length, equals(5));
+      expect(page.first.message, equals('Log 0'));
+      expect(page.last.message, equals('Log 4'));
+    });
   });
 }

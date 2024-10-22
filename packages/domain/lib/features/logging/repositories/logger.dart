@@ -16,4 +16,10 @@ abstract class LoggerRepository {
 
   /// Provides a stream of log messages.
   Stream<LogEntry> get logStream;
+
+  /// Reads log entries from storage by page.
+  ///
+  /// [page] - The page number to read.
+  /// [pageSize] - The number of log entries per page.
+  Future<List<LogEntry>> getLogsByPage(int page, int pageSize);
 }

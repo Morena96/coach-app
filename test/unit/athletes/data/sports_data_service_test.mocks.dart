@@ -340,4 +340,20 @@ class MockLoggerRepository extends _i1.Mock implements _i5.LoggerRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i4.Future<List<_i6.LogEntry>> getLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i4.Future<List<_i6.LogEntry>>.value(<_i6.LogEntry>[]),
+      ) as _i4.Future<List<_i6.LogEntry>>);
 }

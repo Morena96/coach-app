@@ -6,6 +6,7 @@ enum Routes {
   home('/home'),
   helloWorld('/hello-world'),
   map('/map'),
+  timer('/timer'),
   viewSampleGpsData('/view-sample-gps-data'),
   antennaSystem('/antenna-system'),
   antennaDebug('/antenna-debug'),

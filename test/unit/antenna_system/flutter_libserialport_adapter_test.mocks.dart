@@ -117,6 +117,22 @@ class MockLoggerRepository extends _i1.Mock implements _i4.LoggerRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i5.Future<List<_i6.LogEntry>> getLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i5.Future<List<_i6.LogEntry>>.value(<_i6.LogEntry>[]),
+      ) as _i5.Future<List<_i6.LogEntry>>);
 }
 
 /// A class which mocks [SerialPort].

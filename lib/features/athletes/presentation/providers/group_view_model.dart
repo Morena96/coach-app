@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:coach_app/features/athletes/presentation/models/group_view.dart';
 
-/// ViewModel for managing the state of the AthleteViewPage.
+/// ViewModel for managing the state of the AthleteProfilePage.
 class GroupViewModel extends StateNotifier<AsyncValue<GroupView>> {
   final GetGroupByIdUseCase _getGroupByIdUseCase;
 

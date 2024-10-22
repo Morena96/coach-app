@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:domain/features/athletes/data/athletes_service.dart';
-import 'package:domain/features/athletes/data/groups_service.dart';
 import 'package:domain/features/athletes/data/group_roles_service.dart';
+import 'package:domain/features/athletes/data/groups_service.dart';
 import 'package:domain/features/athletes/data/members_service.dart';
 import 'package:domain/features/athletes/entities/group_role.dart';
 import 'package:domain/features/athletes/entities/member.dart';
 import 'package:faker/faker.dart';
-import 'package:collection/collection.dart';
+
+import 'package:coach_app/features/athletes/infrastructure/services/fake_groups_service.dart';
 
 class FakeMembersServiceImpl implements MembersService {
   final AthletesService _athletesService;
@@ -51,6 +53,12 @@ class FakeMembersServiceImpl implements MembersService {
           groupId: group.id,
           role: role,
         ));
+
+        // Update the group-athlete relationship in GroupsService
+        if (_groupsService is FakeGroupsService) {
+          _groupsService.updateGroupAthleteRelationship(
+              group.id, athlete.id, true);
+        }
       }
     }
   }
@@ -83,6 +91,11 @@ class FakeMembersServiceImpl implements MembersService {
     );
     _members.add(newMember);
 
+    // Update the group-athlete relationship in GroupsService
+    if (_groupsService is FakeGroupsService) {
+      _groupsService.updateGroupAthleteRelationship(groupId, athleteId, true);
+    }
+
     return newMember;
   }
 
@@ -107,13 +120,30 @@ class FakeMembersServiceImpl implements MembersService {
     await _ensureInitialized();
     await Future.delayed(const Duration(milliseconds: 100));
     if (memberIds == '*') {
-      _members.removeWhere((member) => member.groupId == groupId);
+      final membersToRemove =
+          _members.where((member) => member.groupId == groupId).toList();
+
+      for (final member in membersToRemove) {
+        if (_groupsService is FakeGroupsService) {
+          _groupsService.updateGroupAthleteRelationship(
+              groupId, member.athleteId, false);
+        }
+        _members.removeWhere((member) => member.groupId == groupId);
+      }
     } else {
       // Remove specific member(s)
       final idsToRemove = memberIds.split(',').map((id) => id.trim()).toSet();
       _members.removeWhere(
-        (member) =>
-            member.groupId == groupId && idsToRemove.contains(member.id),
+        (member) {
+          if (member.groupId == groupId && idsToRemove.contains(member.id)) {
+            if (_groupsService is FakeGroupsService) {
+              _groupsService.updateGroupAthleteRelationship(
+                  groupId, member.athleteId, false);
+            }
+            return true;
+          }
+          return false;
+        },
       );
     }
   }
@@ -189,6 +219,43 @@ class FakeMembersServiceImpl implements MembersService {
 
       _members.add(newMember);
       newMembers.add(newMember);
+
+      // Update the group-athlete relationship in GroupsService
+      if (_groupsService is FakeGroupsService) {
+        _groupsService.updateGroupAthleteRelationship(groupId, athleteId, true);
+      }
+    }
+    return newMembers;
+  }
+
+  @override
+  Future<List<Member>> batchAddGroupsToMember(
+      String athleteId, List<String> groupIds, GroupRole role) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    final newMembers = <Member>[];
+    final errors = <String>[];
+
+    for (final groupId in groupIds) {
+      // Check if the athlete is already a member of the group
+      if (await isAthleteMemberOfGroup(athleteId, groupId)) {
+        errors.add('Athlete is already a member of group $groupId');
+        continue;
+      }
+
+      final newMember = Member(
+        id: _generateUniqueId(),
+        athleteId: athleteId,
+        groupId: groupId,
+        role: role,
+      );
+
+      _members.add(newMember);
+      newMembers.add(newMember);
+
+      // Update the group-athlete relationship in GroupsService
+      if (_groupsService is FakeGroupsService) {
+        _groupsService.updateGroupAthleteRelationship(groupId, athleteId, true);
+      }
     }
     return newMembers;
   }
@@ -203,7 +270,7 @@ class FakeMembersServiceImpl implements MembersService {
   }
 
   String _generateUniqueId() {
-    return DateTime.now().millisecondsSinceEpoch.toString() +
+      return DateTime.now().millisecondsSinceEpoch.toString() +
         Random().nextInt(1000).toString();
   }
 

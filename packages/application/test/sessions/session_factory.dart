@@ -22,7 +22,7 @@ class SessionFactory {
       sport: sport ?? const Sport(id: 'sport-id', name: 'Test Sport'),
       startTime: startTime ?? DateTime.now(),
       duration: duration,
-      assignedGroup: assignedGroup ?? const Group(id: 'group-id', name: 'Test Group', members: []),
+      assignedGroup: assignedGroup ?? const Group(id: 'group-id', name: 'Test Group'),
       selectedAthletes: selectedAthletes ?? [const Athlete(id: 'athlete-id', name: 'Test Athlete')],
       gpsDataRepresentations: gpsDataRepresentations ?? [],
     );

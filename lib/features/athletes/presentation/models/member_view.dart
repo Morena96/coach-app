@@ -28,3 +28,16 @@ class MemberView extends Equatable {
   @override
   List<Object> get props => [id, athleteId, groupId, role];
 }
+
+/// Extension on MemberView to provide conversion to domain entity
+extension MemberViewX on MemberView {
+  /// Converts a MemberView to a Member domain entity
+  Member toDomain() {
+    return Member(
+      id: id,
+      athleteId: athleteId,
+      groupId: groupId,
+      role: groupRoleFromView(role),
+    );
+  }
+}

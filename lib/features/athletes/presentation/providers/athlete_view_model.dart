@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:coach_app/features/athletes/presentation/models/athlete_view.dart';
 
-/// ViewModel for managing the state of the AthleteViewPage.
+/// ViewModel for managing the state of the AthleteProfilePage.
 class AthleteViewModel extends StateNotifier<AsyncValue<AthleteView>> {
   final GetAthleteByIdUseCase _getAthleteByIdUseCase;
 

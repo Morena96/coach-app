@@ -17,6 +17,7 @@ class HelloWorldPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appState = ref.watch(appStateProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Theme Showcase'),

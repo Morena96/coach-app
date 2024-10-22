@@ -19,4 +19,7 @@ class MockLogger implements LoggerRepository {
 
   @override
   Stream<LogEntry> get logStream => Stream.fromIterable(logs);
+
+  @override
+  Future<List<LogEntry>> getLogsByPage(int page, int pageSize) async => logs.skip(page * pageSize).take(pageSize).toList();
 }

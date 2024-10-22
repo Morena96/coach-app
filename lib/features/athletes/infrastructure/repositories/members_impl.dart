@@ -148,6 +148,19 @@ class MembersImpl implements Members {
   }
 
   @override
+  Future<Result<List<Member>>> batchAddGroupsToMember(
+      String memberId, List<String> groupIds, GroupRole role) async {
+    try {
+      final members = await _membersService.batchAddGroupsToMember(
+          memberId, groupIds, role);
+      return Result.success(members);
+    } catch (e) {
+      _loggerRepository.error(e.toString());
+      return Result.failure(e.toString());
+    }
+  }
+
+  @override
   Future<Result<void>> batchRemoveMembersFromGroup(
       String groupId, List<String> memberIds) async {
     try {
@@ -159,11 +172,12 @@ class MembersImpl implements Members {
     }
   }
 
-   @override
+  @override
   Future<Result<Map<String, bool>>> areAthletesMembersOfGroup(
       List<String> athleteIds, String groupId) async {
     try {
-      final membershipStatus = await _membersService.areAthletesMembersOfGroup(athleteIds, groupId);
+      final membershipStatus =
+          await _membersService.areAthletesMembersOfGroup(athleteIds, groupId);
       return Result.success(membershipStatus);
     } catch (e) {
       _loggerRepository.error(e.toString());

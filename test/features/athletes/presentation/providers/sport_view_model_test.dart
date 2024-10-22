@@ -21,6 +21,9 @@ void main() {
 
   setUp(() {
     mockSports = MockSports();
+    when(mockSports.getAllSports(filterCriteria: anyNamed('filterCriteria')))
+        .thenAnswer((_) async => Result.success([]));
+
     container = ProviderContainer(
       overrides: [
         sportsProvider.overrideWithValue(mockSports),
@@ -47,7 +50,7 @@ void main() {
         const Sport(id: '1', name: 'Football'),
         const Sport(id: '2', name: 'Basketball'),
       ];
-      when(mockSports.getAllSports())
+      when(mockSports.getAllSports(filterCriteria: null))
           .thenAnswer((_) async => Result.success(sports));
 
       await container.read(sportsViewModelProvider.notifier).fetchSports();
@@ -58,7 +61,7 @@ void main() {
     });
 
     test('fetchAllSports should update state with error on failure', () async {
-      when(mockSports.getAllSports())
+      when(mockSports.getAllSports(filterCriteria: null))
           .thenAnswer((_) async => Result.failure('Error fetching sports'));
 
       await container.read(sportsViewModelProvider.notifier).fetchSports();

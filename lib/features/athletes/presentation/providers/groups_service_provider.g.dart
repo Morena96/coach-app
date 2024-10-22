@@ -6,9 +6,11 @@ part of 'groups_service_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupsServiceHash() => r'd0142de4d160b0262fc84688a44601f647ac46df';
+String _$groupsServiceHash() => r'd8a7231ac25d4db757ac5b98000456f1d2e094d0';
 
-/// See also [groupsService].
+/// Provides a singleton instance of GroupsService for the entire app.
+///
+/// Copied from [groupsService].
 @ProviderFor(groupsService)
 final groupsServiceProvider = Provider<GroupsService>.internal(
   groupsService,

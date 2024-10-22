@@ -1,3 +1,4 @@
+import 'package:coach_app/features/sessions/presentation/widgets/edit_session_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -65,8 +66,7 @@ class SessionDesktopTableItem extends StatelessWidget {
                 session: session,
                 group: GroupView(
                     id: groupId!,
-                    name: session.assignedGroupName,
-                    members: const []),
+                    name: session.assignedGroup.name),
               ),
             ),
       child: Padding(
@@ -137,9 +137,9 @@ class SessionDesktopTableItem extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Tooltip(
-                message: session.assignedGroupName,
+                message: session.assignedGroup.name,
                 child: Text(
-                  session.assignedGroupName,
+                  session.assignedGroup.name,
                   style: AppTextStyle.primary16r,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -187,7 +187,7 @@ class SessionMobileTableItem extends StatelessWidget {
           _buildInfoRow(context.l10n.duration, session.duration.toHHMMSS()),
           _buildInfoRow(
               context.l10n.athletes, '${session.selectedAthletes.length}'),
-          _buildInfoRow(context.l10n.group, session.assignedGroupName),
+          _buildInfoRow(context.l10n.group, session.assignedGroup.name),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -252,14 +252,14 @@ class SessionEditDeleteButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      width: 80,
+      width: 82,
       child: Row(
         children: [
-          Tooltip(
-            message: context.l10n.editSession,
-            child: IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
+          EditSessionButton(
+            session: session,
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: SvgPicture.asset(
                 'assets/icons/pen.svg',
                 width: 18,
               ),

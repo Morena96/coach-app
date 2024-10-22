@@ -46,8 +46,8 @@ void main() {
       (WidgetTester tester) async {
     // Arrange
     final groups = [
-      const GroupView(id: '2', name: 'Group 2', members: []),
-      const GroupView(id: '1', name: 'Group 1', members: []),
+      const GroupView(id: '2', name: 'Group 2'),
+      const GroupView(id: '1', name: 'Group 1'),
     ];
     pagingController.appendPage(groups, 1);
 

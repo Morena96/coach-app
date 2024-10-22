@@ -8,6 +8,9 @@ abstract class LogPersistenceManager {
   /// Reads all log entries from storage.
   Future<List<LogEntry>> readLogs();
 
+  /// Reads log entries from storage by page.
+  Future<List<LogEntry>> readLogsByPage(int page, int pageSize);
+
   /// Clears all log entries from storage.
   Future<void> clearLogs();
 

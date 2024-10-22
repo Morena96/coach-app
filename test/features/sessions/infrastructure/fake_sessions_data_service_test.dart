@@ -32,8 +32,8 @@ void main() {
     ]);
 
     when(mockGroupsService.getAllGroups()).thenAnswer((_) async => [
-      const Group(id: '1', name: 'Test Group', members: []),
-      const Group(id: '2', name: 'Test Group 2', members: []),
+      const Group(id: '1', name: 'Test Group'),
+      const Group(id: '2', name: 'Test Group 2'),
     ]);
 
     when(mockAthletesService.getAllAthletes()).thenAnswer((_) async => [

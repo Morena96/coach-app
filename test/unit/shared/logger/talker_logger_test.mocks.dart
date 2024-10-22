@@ -64,6 +64,22 @@ class MockLogPersistenceManager extends _i1.Mock
       ) as _i4.Future<List<_i5.LogEntry>>);
 
   @override
+  _i4.Future<List<_i5.LogEntry>> readLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #readLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i4.Future<List<_i5.LogEntry>>.value(<_i5.LogEntry>[]),
+      ) as _i4.Future<List<_i5.LogEntry>>);
+
+  @override
   _i4.Future<void> clearLogs() => (super.noSuchMethod(
         Invocation.method(
           #clearLogs,

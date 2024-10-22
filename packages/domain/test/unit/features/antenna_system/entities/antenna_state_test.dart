@@ -5,6 +5,7 @@ import 'package:domain/features/antenna_system/repositories/antenna_command_repo
 import 'package:domain/features/antenna_system/state_machine/antenna_context.dart';
 import 'package:domain/features/antenna_system/state_machine/antenna_state_machine.dart';
 import 'package:domain/features/logging/repositories/logger.dart';
+import 'package:domain/features/shared/utilities/binary_utils/binary_utils.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -73,12 +74,13 @@ void main() {
       expect(testState.name, equals('TestAntennaState'));
     });
 
-    test('sendCommand should create a frame and send it to the repository',
+    test('sendCommand should create a frame, pad the binary, and send it to the repository',
         () async {
       // Arrange
       final testCommand = SetStateCommand(rfSlotStates: []);
       final expectedFrame = Frame.fromCommand(testCommand, parsingStrategy);
       final expectedBinary = expectedFrame.toBinary(parsingStrategy);
+      final paddedBinary = BinaryUtils.padBinary(expectedBinary);
 
       when(mockRepository.sendCommandToAll(any)).thenAnswer((_) async {});
 
@@ -86,7 +88,7 @@ void main() {
       await testState.sendCommand(testCommand);
 
       // Assert
-      verify(mockRepository.sendCommandToAll(expectedBinary)).called(1);
+      verify(mockRepository.sendCommandToAll(paddedBinary)).called(1);
     });
 
     test('sendCommand should use the context\'s parsing strategy', () async {

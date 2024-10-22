@@ -17,11 +17,11 @@ class FlutterMapWidget extends ConsumerStatefulWidget {
   final String tileUrlTemplate;
 
   const FlutterMapWidget({
-    Key? key,
+    super.key,
     required this.initialCenter,
     this.initialZoom = 15,
     required this.tileUrlTemplate,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<FlutterMapWidget> createState() => _FlutterMapWidgetState();
@@ -39,7 +39,6 @@ class _FlutterMapWidgetState extends ConsumerState<FlutterMapWidget> {
     _markerPosition = widget.initialCenter;
     _currentZoom = widget.initialZoom;
   }
-
 
   @override
   Widget build(BuildContext context) {

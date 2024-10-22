@@ -18,3 +18,12 @@ class SportView extends Equatable {
   @override
   List<Object?> get props => [id, name];
 }
+
+extension SportViewX on SportView {
+  Sport toDomain() {
+    return Sport(
+      id: id,
+      name: name,
+    );
+  }
+}

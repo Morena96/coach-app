@@ -1,10 +1,11 @@
-import 'package:coach_app/features/athletes/infrastructure/repositories/sports_impl.dart';
 import 'package:domain/features/athletes/data/sports_service.dart';
 import 'package:domain/features/athletes/entities/sport.dart';
 import 'package:domain/features/logging/repositories/logger.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+import 'package:coach_app/features/athletes/infrastructure/repositories/sports_impl.dart';
 
 @GenerateMocks([SportsService, LoggerRepository])
 import 'sports_impl_test.mocks.dart';
@@ -113,6 +114,112 @@ void main() {
       verify(mockSportsService.updateSport(sport)).called(1);
     });
 
-    // Add failure cases for each method similar to the getAllSports failure case
+    group('getSportsByPage', () {
+      /// Test successful retrieval of sports with pagination
+      test('returns success result when service succeeds with pagination',
+          () async {
+        const page = 1;
+        const pageSize = 10;
+        final sports = List.generate(
+          pageSize,
+          (index) => Sport(
+            id: index.toString(),
+            name: 'Sport $index',
+          ),
+        );
+
+        when(
+          mockSportsService.getSportsByPage(
+            page,
+            pageSize,
+            filterCriteria: null,
+          ),
+        ).thenAnswer((_) async => sports);
+
+        final result = await sportsImpl.getSportsByPage(page, pageSize);
+
+        expect(result.isSuccess, true);
+        expect(result.value, sports);
+        expect(result.value?.length, pageSize);
+        verify(
+          mockSportsService.getSportsByPage(
+            page,
+            pageSize,
+            filterCriteria: null,
+          ),
+        ).called(1);
+      });
+
+      /// Test successful retrieval with filter criteria
+
+      /// Test handling of service failure
+      test('returns failure result when service throws', () async {
+        const page = 1;
+        const pageSize = 10;
+
+        when(
+          mockSportsService.getSportsByPage(
+            page,
+            pageSize,
+            filterCriteria: null,
+          ),
+        ).thenThrow(Exception('Failed to fetch sports page'));
+
+        final result = await sportsImpl.getSportsByPage(page, pageSize);
+
+        expect(result.isSuccess, false);
+        expect(result.error, 'Exception: Failed to fetch sports page');
+        verify(mockLoggerRepository.error(any)).called(1);
+      });
+
+      /// Test edge case with empty page
+      test('handles empty page correctly', () async {
+        const page = 1;
+        const pageSize = 10;
+        const emptySports = <Sport>[];
+
+        when(
+          mockSportsService.getSportsByPage(
+            page,
+            pageSize,
+            filterCriteria: null,
+          ),
+        ).thenAnswer((_) async => emptySports);
+
+        final result = await sportsImpl.getSportsByPage(page, pageSize);
+
+        expect(result.isSuccess, true);
+        expect(result.value, isEmpty);
+        verify(
+          mockSportsService.getSportsByPage(
+            page,
+            pageSize,
+            filterCriteria: null,
+          ),
+        ).called(1);
+      });
+
+      /// Test edge case with invalid page parameters
+      test('handles invalid page parameters gracefully', () async {
+        const invalidPage = -1;
+        const invalidPageSize = 0;
+
+        when(
+          mockSportsService.getSportsByPage(
+            invalidPage,
+            invalidPageSize,
+            filterCriteria: null,
+          ),
+        ).thenThrow(ArgumentError('Invalid pagination parameters'));
+
+        final result = await sportsImpl.getSportsByPage(
+          invalidPage,
+          invalidPageSize,
+        );
+
+        expect(result.isSuccess, false);
+        verify(mockLoggerRepository.error(any)).called(1);
+      });
+    });
   });
 }

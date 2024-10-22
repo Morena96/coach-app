@@ -1,3 +1,7 @@
+import 'package:binary_data_reader/main.dart';
+import 'package:coach_app/core/widgets/app_dialog.dart';
+import 'package:coach_app/features/antenna_system/presentation/view_model/set_config_data.dart';
+import 'package:coach_app/features/antenna_system/presentation/widgets/set_config_form.dart';
 import 'package:domain/features/antenna_system/entities/antenna_state.dart';
 import 'package:domain/features/antenna_system/value_objects/antenna_config.dart';
 import 'package:flutter/material.dart';
@@ -45,35 +49,66 @@ class AntennaControlPageState extends ConsumerState<AntennaControlPage> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     ElevatedButton(
-                      onPressed: () async =>
-                          await antennaStateMachine.transitionToLiveMode(),
+                      onPressed: () async => await antennaStateMachine
+                          .transitionToLiveMode(state.$2.first.portName),
                       child: Text(context.l10n.modeLive),
                     ),
                     const SizedBox(height: 8),
                     ElevatedButton(
                       onPressed: () async => await ref
                           .read(antennaStateMachineProvider)
-                          .transitionToCommandMode(),
+                          .transitionToCommandMode(state.$2.isNotEmpty
+                              ? state.$2.first.portName
+                              : ''),
                       child: Text(context.l10n.modeCommand),
                     ),
                     const SizedBox(height: 8),
                     ElevatedButton(
-                      onPressed: () async => await ref
-                          .read(antennaStateMachineProvider)
-                          .setConfig(AntennaConfig(
-                              masterId: 1,
-                              frequency: 24,
-                              mainFrequency: 0,
-                              isMain: true,
-                              clubId: 33)),
-                      child: Text(context.l10n.setConfigRandomData),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AppDialog(
+                            title: context.l10n.setConfig,
+                            content: SetConfigForm(
+                              onSubmit: (SetConfigData data) {
+                                ref.read(antennaStateMachineProvider).setConfig(
+                                      AntennaConfig(
+                                        masterId: data.masterId,
+                                        frequency: data.frequency,
+                                        mainFrequency: data.mainFrequency,
+                                        isMain: data.isMain,
+                                        clubId: data.clubId,
+                                      ),
+                                      state.$2.isNotEmpty
+                                          ? state.$2.first.portName
+                                          : '',
+                                    );
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            actions: const [],
+                          ),
+                        );
+                      },
+                      child: Text(context.l10n.setConfig),
                     ),
                     const SizedBox(height: 8),
                     ElevatedButton(
                       onPressed: () => ref
                           .read(antennaStateMachineProvider)
-                          .setAllPodsToLive(),
+                          .setAllPodsToLive(state.$2.isNotEmpty
+                              ? state.$2.first.portName
+                              : ''),
                       child: Text(context.l10n.setAllPodsToLive),
+                    ),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () => ref
+                          .read(antennaStateMachineProvider)
+                          .setAllPodsToStandby(state.$2.isNotEmpty
+                              ? state.$2.first.portName
+                              : ''),
+                      child: Text(context.l10n.setAllPodsToStandby),
                     ),
                     const SizedBox(height: 8),
                     ElevatedButton(
@@ -115,17 +150,22 @@ class AntennaControlPageState extends ConsumerState<AntennaControlPage> {
                     ),
                     Expanded(
                       child: receiveCommands.when(
-                        data: (command) {
+                        data: (Command command) {
                           setState(() {
                             _logs.add(command.toString());
                           });
                           return ListView.builder(
                             itemCount: _logs.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(_logs[index]),
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 2.0),
+                                child: Text(_logs[index],
+                                    style: const TextStyle(fontSize: 12)),
                               );
                             },
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
                           );
                         },
                         loading: () =>

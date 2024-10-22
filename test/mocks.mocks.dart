@@ -1603,6 +1603,22 @@ class MockLoggerRepository extends _i1.Mock implements _i36.LoggerRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i25.Future<List<_i37.LogEntry>> getLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i25.Future<List<_i37.LogEntry>>.value(<_i37.LogEntry>[]),
+      ) as _i25.Future<List<_i37.LogEntry>>);
 }
 
 /// A class which mocks [Sports].
@@ -2767,6 +2783,16 @@ class MockGroupsService extends _i1.Mock implements _i52.GroupsService {
         Invocation.method(
           #restoreGroup,
           [id],
+        ),
+        returnValue: _i25.Future<void>.value(),
+        returnValueForMissingStub: _i25.Future<void>.value(),
+      ) as _i25.Future<void>);
+
+  @override
+  _i25.Future<void> initializeDatabase() => (super.noSuchMethod(
+        Invocation.method(
+          #initializeDatabase,
+          [],
         ),
         returnValue: _i25.Future<void>.value(),
         returnValueForMissingStub: _i25.Future<void>.value(),

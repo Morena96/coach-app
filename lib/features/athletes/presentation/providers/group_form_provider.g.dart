@@ -6,7 +6,7 @@ part of 'group_form_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupFormHash() => r'492fcdc8af17ede832b44e868b1fb52aa8bf66a9';
+String _$groupFormHash() => r'bb08cf9edac3b3df384d89cdcf3e6ce2dd40eaba';
 
 /// See also [GroupForm].
 @ProviderFor(GroupForm)

@@ -33,6 +33,10 @@ class TalkerLogger implements LoggerRepository {
    @override
   Stream<domain_logs.LogEntry> get logStream => _logSubject.stream;
 
+  @override
+  Future<List<domain_logs.LogEntry>> getLogsByPage(int page, int pageSize) async =>
+      _persistenceManager.readLogsByPage(page, pageSize);
+
   void _handleTalkerLog(TalkerData log) {
     final level = _mapTalkerLogLevelToLogLevel(log.logLevel);
     final logEntry = domain_logs.LogEntry(

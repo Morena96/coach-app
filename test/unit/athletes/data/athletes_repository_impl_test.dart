@@ -21,7 +21,8 @@ void main() {
     mockService = MockAthletesService();
     mockLoggerRepository = MockLoggerRepository();
     mockMembersService = MockMembersService();
-    athletesRepository = AthletesImpl(mockService, mockLoggerRepository, mockMembersService);
+    athletesRepository =
+        AthletesImpl(mockService, mockLoggerRepository, mockMembersService);
   });
 
   group('AthletesImpl', () {
@@ -57,11 +58,12 @@ void main() {
       expect(result.isSuccess, isTrue);
     });
 
-
     test('restoreAthlete should return success result when athlete is restored',
         () async {
-      const restoredAthlete = Athlete(id: '1', name: 'John Doe', archived: false);
-      when(mockService.restoreAthlete('1')).thenAnswer((_) => Future.value(restoredAthlete));
+      const restoredAthlete =
+          Athlete(id: '1', name: 'John Doe', archived: false);
+      when(mockService.restoreAthlete('1'))
+          .thenAnswer((_) => Future.value(restoredAthlete));
 
       final result = await athletesRepository.restoreAthlete('1');
 
@@ -79,7 +81,8 @@ void main() {
       expect(result.isFailure, isTrue);
       expect(result.error, equals('Exception: Failed to restore athlete'));
       verify(mockService.restoreAthlete('1')).called(1);
-      verify(mockLoggerRepository.error('Exception: Failed to restore athlete')).called(1);
+      verify(mockLoggerRepository.error('Exception: Failed to restore athlete'))
+          .called(1);
     });
 
     test('deleteAthlete should return failure result when an error occurs',
@@ -210,6 +213,71 @@ void main() {
 
       expect(result.isFailure, isTrue);
       expect(result.error, equals('Exception: Failed to update athlete'));
+    });
+  });
+
+  group('getAthletesByIds', () {
+    test('should return success result with athletes when found', () async {
+      // Arrange
+      final athletes = [
+        const Athlete(id: '1', name: 'John Doe'),
+        const Athlete(id: '2', name: 'Jane Smith'),
+      ];
+      when(mockService.getAthletesByIds(['1', '2']))
+          .thenAnswer((_) => Future.value(athletes));
+
+      // Act
+      final result = await athletesRepository.getAthletesByIds(['1', '2']);
+
+      // Assert
+      expect(result.isSuccess, isTrue);
+      expect(result.value, equals(athletes));
+      verify(mockService.getAthletesByIds(['1', '2'])).called(1);
+    });
+
+    test('should return success result with empty list when no athletes found',
+        () async {
+      // Arrange
+      when(mockService.getAthletesByIds(['1']))
+          .thenAnswer((_) => Future.value([]));
+
+      // Act
+      final result = await athletesRepository.getAthletesByIds(['1']);
+
+      // Assert
+      expect(result.isSuccess, isTrue);
+      expect(result.value, isEmpty);
+      verify(mockService.getAthletesByIds(['1'])).called(1);
+    });
+
+    test('should return failure result when an error occurs', () async {
+      // Arrange
+      when(mockService.getAthletesByIds(['1']))
+          .thenThrow(Exception('Failed to fetch athletes'));
+
+      // Act
+      final result = await athletesRepository.getAthletesByIds(['1']);
+
+      // Assert
+      expect(result.isFailure, isTrue);
+      expect(result.error, equals('Exception: Failed to fetch athletes'));
+      verify(mockService.getAthletesByIds(['1'])).called(1);
+      verify(mockLoggerRepository.error('Exception: Failed to fetch athletes'))
+          .called(1);
+    });
+
+    test('should handle empty input list', () async {
+      // Arrange
+      when(mockService.getAthletesByIds([]))
+          .thenAnswer((_) => Future.value([]));
+
+      // Act
+      final result = await athletesRepository.getAthletesByIds([]);
+
+      // Assert
+      expect(result.isSuccess, isTrue);
+      expect(result.value, isEmpty);
+      verify(mockService.getAthletesByIds([])).called(1);
     });
   });
 }

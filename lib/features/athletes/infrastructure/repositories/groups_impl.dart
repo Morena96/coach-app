@@ -75,7 +75,6 @@ class GroupsImpl implements Groups {
           name: name,
           description: description,
           sport: sport,
-          members: const [],
         ),
       );
       return Result.success(group);

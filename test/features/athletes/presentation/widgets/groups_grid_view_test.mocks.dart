@@ -323,7 +323,7 @@ class MockGroupsViewModel extends _i1.Mock implements _i6.GroupsViewModel {
 
   @override
   _i9.Future<_i4.Result<void>> updateGroup(
-    _i5.GroupView? groupView,
+    _i5.GroupView? group,
     Map<String, dynamic>? groupData,
     _i16.ImageData? avatar,
   ) =>
@@ -331,7 +331,7 @@ class MockGroupsViewModel extends _i1.Mock implements _i6.GroupsViewModel {
         Invocation.method(
           #updateGroup,
           [
-            groupView,
+            group,
             groupData,
             avatar,
           ],
@@ -341,7 +341,7 @@ class MockGroupsViewModel extends _i1.Mock implements _i6.GroupsViewModel {
           Invocation.method(
             #updateGroup,
             [
-              groupView,
+              group,
               groupData,
               avatar,
             ],

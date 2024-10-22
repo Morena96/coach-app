@@ -166,11 +166,11 @@ void main() {
         // Simulate the command response
         streamController.add(ModeCommandCommand());
 
-        final result = await stateMachine.transitionToCommandMode();
+        final result = await stateMachine.transitionToCommandMode('port1');
 
         expect(result, isTrue);
         expect(stateMachine.currentState, isA<CommandModeState>());
-        verify(mockRepository.sendCommandToAll(any)).called(1);
+        verify(mockRepository.sendCommand(any, any)).called(1);
       });
 
       test('should fail to transition to command mode', () async {
@@ -180,16 +180,16 @@ void main() {
             calibrationService: mockCalibrationService,
             commandTimeout: const Duration(milliseconds: 1));
 
-        when(mockRepository.sendCommandToAll(any)).thenAnswer((_) async {});
+        when(mockRepository.sendCommand(any, any)).thenAnswer((_) async {});
         when(mockStateStream.add(any)).thenAnswer((_) async {});
 
         // Don't add any command to the stream to simulate a timeout
 
-        final result = await stateMachine.transitionToCommandMode();
+        final result = await stateMachine.transitionToCommandMode('port1');
 
         expect(result, isFalse);
         expect(stateMachine.currentState, isA<IdleState>());
-        verify(mockRepository.sendCommandToAll(any)).called(1);
+        verify(mockRepository.sendCommand(any, any)).called(1);
       });
     });
 
@@ -200,7 +200,7 @@ void main() {
             context, streamController.stream, mockStateStream,
             calibrationService: mockCalibrationService);
 
-        when(mockRepository.sendCommandToAll(any)).thenAnswer((_) async {});
+        when(mockRepository.sendCommand(any, any)).thenAnswer((_) async {});
         when(mockStateStream.add(any)).thenAnswer((_) async {});
 
         // Set initial state to CommandModeState
@@ -209,11 +209,11 @@ void main() {
         // Simulate the command response
         streamController.add(ModeLiveCommand());
 
-        final result = await stateMachine.transitionToLiveMode();
+        final result = await stateMachine.transitionToLiveMode('port1');
 
         expect(result, isTrue);
         expect(stateMachine.currentState, isA<LiveModeState>());
-        verify(mockRepository.sendCommandToAll(any)).called(1);
+        verify(mockRepository.sendCommand(any, any)).called(1);
       });
 
       test('should fail to transition to live mode', () async {
@@ -223,16 +223,16 @@ void main() {
             calibrationService: mockCalibrationService,
             commandTimeout: const Duration(milliseconds: 1));
 
-        when(mockRepository.sendCommandToAll(any)).thenAnswer((_) async {});
+        when(mockRepository.sendCommand(any, any)).thenAnswer((_) async {});
         when(mockStateStream.add(any)).thenAnswer((_) async {});
 
         // Don't add any command to the stream to simulate a timeout
 
-        final result = await stateMachine.transitionToLiveMode();
+        final result = await stateMachine.transitionToLiveMode('port1');
 
         expect(result, isFalse);
         expect(stateMachine.currentState, isA<CommandModeState>());
-        verify(mockRepository.sendCommandToAll(any)).called(1);
+        verify(mockRepository.sendCommand(any, any)).called(1);
       });
     });
 
@@ -259,15 +259,17 @@ void main() {
           clubId: 1,
         ));
 
-        final result = await stateMachine.setConfig(AntennaConfig(
-            masterId: 1,
-            frequency: 3,
-            mainFrequency: 4,
-            isMain: true,
-            clubId: 1));
+        final result = await stateMachine.setConfig(
+            AntennaConfig(
+                masterId: 1,
+                frequency: 3,
+                mainFrequency: 4,
+                isMain: true,
+                clubId: 1),
+            'port1');
 
         expect(result, isTrue);
-        verify(mockRepository.sendCommandToAll(any)).called(1);
+        verify(mockRepository.sendCommand(any, any)).called(1);
       });
 
       test('should fail to set config due to timeout', () async {
@@ -277,22 +279,24 @@ void main() {
             calibrationService: mockCalibrationService,
             commandTimeout: const Duration(milliseconds: 1));
 
-        when(mockRepository.sendCommandToAll(any)).thenAnswer((_) async {});
+        when(mockRepository.sendCommand(any, any)).thenAnswer((_) async {});
         when(mockStateStream.add(any)).thenAnswer((_) async {});
 
         stateMachine.setState(CommandModeState(context));
 
         // Don't add any command to the stream to simulate a timeout
 
-        final result = await stateMachine.setConfig(AntennaConfig(
-            masterId: 1,
-            frequency: 3,
-            mainFrequency: 4,
-            isMain: true,
-            clubId: 1));
+        final result = await stateMachine.setConfig(
+            AntennaConfig(
+                masterId: 1,
+                frequency: 3,
+                mainFrequency: 4,
+                isMain: true,
+                clubId: 1),
+            'port1');
 
         expect(result, isFalse);
-        verify(mockRepository.sendCommandToAll(any)).called(1);
+        verify(mockRepository.sendCommand(any, any)).called(1);
       });
 
       test('should fail to set config when not in CommandModeState', () async {
@@ -304,12 +308,14 @@ void main() {
         // Set initial state to LiveModeState
         stateMachine.setState(LiveModeState(context));
 
-        final result = await stateMachine.setConfig(AntennaConfig(
-            masterId: 1,
-            frequency: 3,
-            mainFrequency: 4,
-            isMain: true,
-            clubId: 1));
+        final result = await stateMachine.setConfig(
+            AntennaConfig(
+                masterId: 1,
+                frequency: 3,
+                mainFrequency: 4,
+                isMain: true,
+                clubId: 1),
+            'port1');
 
         expect(result, isFalse);
         verifyNever(mockRepository.sendCommandToAll(any));
@@ -326,9 +332,9 @@ void main() {
         // Set initial state to LiveModeState
         stateMachine.setState(LiveModeState(context));
 
-        stateMachine.setAllPodsToLive();
+        stateMachine.setAllPodsToLive('port1');
 
-        verify(mockRepository.sendCommandToAll(any)).called(1);
+        verify(mockRepository.sendCommand(any, any)).called(1);
       });
 
       test('should not set pods to live mode when not in LiveModeState', () {
@@ -340,9 +346,69 @@ void main() {
         // Set initial state to CommandModeState
         stateMachine.setState(CommandModeState(context));
 
-        stateMachine.setAllPodsToLive();
+        stateMachine.setAllPodsToLive('port1');
 
-        verifyNever(mockRepository.sendCommandToAll(any));
+        verifyNever(mockRepository.sendCommand(any, any));
+      });
+    });
+
+    group('Can set all pods to standby mode', () {
+      test('should set all pods to standby mode when in LiveModeState', () {
+        var streamController = StreamController<Command>.broadcast();
+        stateMachine = AntennaStateMachine(
+            context, streamController.stream, mockStateStream,
+            calibrationService: mockCalibrationService);
+
+        // Set initial state to LiveModeState
+        stateMachine.setState(LiveModeState(context));
+
+        stateMachine.setAllPodsToStandby('port1');
+
+        verify(mockRepository.sendCommand(any, any)).called(1);
+      });
+
+      test('should not set pods to standby mode when not in LiveModeState', () {
+        var streamController = StreamController<Command>.broadcast();
+        stateMachine = AntennaStateMachine(
+            context, streamController.stream, mockStateStream,
+            calibrationService: mockCalibrationService);
+
+        // Set initial state to CommandModeState
+        stateMachine.setState(CommandModeState(context));
+
+        stateMachine.setAllPodsToStandby('port1');
+
+        verifyNever(mockRepository.sendCommand(any, any));
+      });
+    });
+
+    group('Can set all pods to download mode', () {
+      test('should set all pods to download mode when in LiveModeState', () {
+        var streamController = StreamController<Command>.broadcast();
+        stateMachine = AntennaStateMachine(
+            context, streamController.stream, mockStateStream,
+            calibrationService: mockCalibrationService);
+
+        // Set initial state to LiveModeState
+        stateMachine.setState(LiveModeState(context));
+
+        stateMachine.setAllPodsToDownload('port1');
+
+        verify(mockRepository.sendCommand(any, any)).called(1);
+      });
+
+      test('should not set pods to download mode when not in LiveModeState', () {
+        var streamController = StreamController<Command>.broadcast();
+        stateMachine = AntennaStateMachine(
+            context, streamController.stream, mockStateStream,
+            calibrationService: mockCalibrationService);
+
+        // Set initial state to CommandModeState
+        stateMachine.setState(CommandModeState(context));
+
+        stateMachine.setAllPodsToDownload('port1');
+
+        verifyNever(mockRepository.sendCommand(any, any));
       });
     });
   });

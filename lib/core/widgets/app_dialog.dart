@@ -199,10 +199,13 @@ class AppConfirmDialog extends StatelessWidget {
     return AppDialog(
       title: context.l10n.areYouSure,
       forceDialog: true,
-      content: Text(
-        content,
-        style: AppTextStyle.secondary14r,
-        textAlign: TextAlign.center,
+      content: Padding(
+        padding: EdgeInsets.only(top: context.isMobile ? 26 : 0),
+        child: Text(
+          content,
+          style: AppTextStyle.secondary14r,
+          textAlign: TextAlign.center,
+        ),
       ),
       actions: [
         ElevatedButton(

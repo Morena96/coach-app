@@ -1,3 +1,4 @@
+import 'package:coach_app/features/sessions/presentation/providers/update_session_use_case_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:coach_app/features/sessions/presentation/providers/delete_session_use_case_provider.dart';
@@ -12,10 +13,12 @@ final sessionsViewModelProvider = StateNotifierProvider.autoDispose
   final getAllSessionsByPageUseCase =
       ref.watch(getAllSessionsByPageUseCaseProvider);
   final deleteSessionUseCase = ref.watch(deleteSessionUseCaseProvider);
+  final updateSessionUseCase = ref.watch(updateSessionUseCaseProvider);
 
   return SessionsViewModel(
     getAllSessionsByPageUseCase,
     deleteSessionUseCase,
+    updateSessionUseCase,
     initialGroupId: initialGroupId,
   );
 });

@@ -30,4 +30,8 @@ abstract class GroupsService {
 
   /// Restore group
   Future<void> restoreGroup(String id);
+
+  /// Initialize the database;
+  /// Should be called once in the app startup
+  Future<void> initializeDatabase();
 }

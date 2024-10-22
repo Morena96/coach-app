@@ -323,6 +323,16 @@ class MockGroupsService extends _i1.Mock implements _i10.GroupsService {
         returnValue: _i6.Future<void>.value(),
         returnValueForMissingStub: _i6.Future<void>.value(),
       ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> initializeDatabase() => (super.noSuchMethod(
+        Invocation.method(
+          #initializeDatabase,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 }
 
 /// A class which mocks [SportsService].

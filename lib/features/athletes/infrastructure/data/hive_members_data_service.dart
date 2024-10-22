@@ -130,6 +130,16 @@ class HiveMembersDataService implements MembersService {
   }
 
   @override
+  Future<List<Member>> batchAddGroupsToMember(String athleteId, List<String> groupIds, GroupRole role) async {
+    final newMembers = <Member>[];
+    for (final groupId in groupIds) {
+      final newMember = await addMemberToGroup(athleteId, groupId, role);
+      newMembers.add(newMember);
+    }
+    return newMembers;
+  }
+
+  @override
   Future<void> batchRemoveMembersFromGroup(String groupId, List<String> memberIds) async {
     await membersBox.deleteAll(memberIds);
     _cachedMembers = null;

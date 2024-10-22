@@ -38,8 +38,8 @@ void main() {
     expect(useCase, isA<PutAntennaIntoCommandModeUseCase>());
     
     // Verify that the use case is created with the mocked AntennaStateMachine
-    when(mockAntennaStateMachine.transitionToCommandMode()).thenAnswer((_) async => true);
-    useCase.execute();
-    verify(mockAntennaStateMachine.transitionToCommandMode()).called(1);
+    when(mockAntennaStateMachine.transitionToCommandMode('port1')).thenAnswer((_) async => true);
+    useCase.execute('port1');
+    verify(mockAntennaStateMachine.transitionToCommandMode('port1')).called(1);
   });
 }

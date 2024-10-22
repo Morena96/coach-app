@@ -14,11 +14,14 @@ class SportViewModel extends StateNotifier<AsyncValue<List<SportView>>> {
   /// Creates a new instance of SportsViewModel
   ///
   /// [_sports] The Sports use case for sports operations
-  SportViewModel(this._sports) : super(const AsyncValue.loading());
+  SportViewModel(this._sports) : super(const AsyncValue.loading()) {
+    fetchSports();
+  }
 
   Future<void> fetchSports({SportFilterCriteria? filterCriteria}) async {
     state = const AsyncValue.loading();
     final result = await _sports.getAllSports(filterCriteria: filterCriteria);
+
     if (result.isSuccess) {
       state = AsyncValue.data(result.value!.map(SportView.fromDomain).toList());
     } else {

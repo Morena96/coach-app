@@ -134,37 +134,64 @@ class MockAntennaStateMachine extends _i1.Mock
       );
 
   @override
-  _i4.Future<bool> transitionToCommandMode() => (super.noSuchMethod(
+  _i4.Future<bool> transitionToCommandMode(String? portName) =>
+      (super.noSuchMethod(
         Invocation.method(
           #transitionToCommandMode,
-          [],
+          [portName],
         ),
         returnValue: _i4.Future<bool>.value(false),
       ) as _i4.Future<bool>);
 
   @override
-  _i4.Future<bool> transitionToLiveMode() => (super.noSuchMethod(
+  _i4.Future<bool> transitionToLiveMode(String? portName) =>
+      (super.noSuchMethod(
         Invocation.method(
           #transitionToLiveMode,
-          [],
+          [portName],
         ),
         returnValue: _i4.Future<bool>.value(false),
       ) as _i4.Future<bool>);
 
   @override
-  _i4.Future<bool> setConfig(_i8.AntennaConfig? config) => (super.noSuchMethod(
+  _i4.Future<bool> setConfig(
+    _i8.AntennaConfig? config,
+    String? portName,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #setConfig,
-          [config],
+          [
+            config,
+            portName,
+          ],
         ),
         returnValue: _i4.Future<bool>.value(false),
       ) as _i4.Future<bool>);
 
   @override
-  void setAllPodsToLive() => super.noSuchMethod(
+  void setAllPodsToLive(String? portName) => super.noSuchMethod(
         Invocation.method(
           #setAllPodsToLive,
-          [],
+          [portName],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setAllPodsToStandby(String? portName) => super.noSuchMethod(
+        Invocation.method(
+          #setAllPodsToStandby,
+          [portName],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setAllPodsToDownload(String? portName) => super.noSuchMethod(
+        Invocation.method(
+          #setAllPodsToDownload,
+          [portName],
         ),
         returnValueForMissingStub: null,
       );
@@ -264,6 +291,22 @@ class MockLoggerRepository extends _i1.Mock implements _i9.LoggerRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i4.Future<List<_i10.LogEntry>> getLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i4.Future<List<_i10.LogEntry>>.value(<_i10.LogEntry>[]),
+      ) as _i4.Future<List<_i10.LogEntry>>);
 }
 
 /// A class which mocks [Command].

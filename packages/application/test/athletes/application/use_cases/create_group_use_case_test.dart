@@ -48,7 +48,6 @@ void main() {
         name: validGroupData['name'] as String,
         description: validGroupData['description'] as String,
         sport: validGroupData['sport'] as Sport,
-        members: const [],
       );
 
       when(mockValidationService.validateGroupData(validGroupData))
@@ -144,7 +143,6 @@ void main() {
         name: validGroupData['name'] as String,
         description: validGroupData['description'] as String,
         sport: validGroupData['sport'] as Sport,
-        members: const [],
       );
       final avatar = Avatar(
         id: 'avatar1',

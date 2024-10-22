@@ -93,7 +93,6 @@ class GroupForm extends _$GroupForm {
         sport: state.sport,
         description: state.description,
         avatarId: group.avatarId,
-        members: const [],
       ),
       groupData,
       shouldUpdateAvatar ? state.avatar : null,

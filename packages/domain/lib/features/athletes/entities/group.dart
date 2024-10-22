@@ -6,7 +6,6 @@ class Group extends Equatable {
   final String id;
   final String name;
   final String? description;
-  final List<Member> members;
   final String? avatarId;
   final Sport? sport;
   final bool archived;
@@ -15,7 +14,6 @@ class Group extends Equatable {
     required this.id,
     required this.name,
     this.description,
-    required this.members,
     this.avatarId,
     this.sport,
     this.archived = false,
@@ -34,7 +32,6 @@ class Group extends Equatable {
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      members: members ?? this.members,
       avatarId: avatarId ?? this.avatarId,
       sport: sport ?? this.sport,
       archived: archived ?? this.archived,
@@ -47,7 +44,6 @@ class Group extends Equatable {
       id: '',
       name: '',
       description: null,
-      members: [],
       avatarId: null,
       sport: null,
       archived: false,
@@ -60,5 +56,5 @@ class Group extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, name, description, members, avatarId, sport];
+  List<Object?> get props => [id, name, description, avatarId, sport];
 }

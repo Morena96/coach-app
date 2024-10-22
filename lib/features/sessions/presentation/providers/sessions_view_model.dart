@@ -1,5 +1,6 @@
 import 'package:application/sessions/use_cases/delete_session_use_case.dart';
 import 'package:application/sessions/use_cases/get_all_sessions_by_page_use_case.dart';
+import 'package:application/sessions/use_cases/update_session_use_case.dart';
 import 'package:domain/features/sessions/entities/session.dart';
 import 'package:domain/features/sessions/value_objects/sessions_filter_criteria.dart';
 import 'package:domain/features/sessions/value_objects/sessions_sort_criteria.dart';
@@ -21,6 +22,7 @@ import 'package:coach_app/shared/view_models/paginated_view_model.dart';
 class SessionsViewModel extends PaginatedViewModel<SessionView, Session> {
   final GetAllSessionsByPageUseCase _getAllSessionsByPageUseCase;
   final DeleteSessionUseCase _deleteSessionUseCase;
+  final UpdateSessionUseCase _updateSessionUseCase;
   SessionsFilterCriteria _currentFilter;
   SessionsSortCriteria _currentSort;
 
@@ -30,7 +32,8 @@ class SessionsViewModel extends PaginatedViewModel<SessionView, Session> {
 
   SessionsViewModel(
     this._getAllSessionsByPageUseCase,
-    this._deleteSessionUseCase, {
+    this._deleteSessionUseCase,
+    this._updateSessionUseCase, {
     String initialNameFilter = '',
     String? initialGroupId,
     List<String> initialSportsFilter = const [],
@@ -169,4 +172,11 @@ class SessionsViewModel extends PaginatedViewModel<SessionView, Session> {
   Future<Result<void>> deleteItemFromService(SessionView item) {
     return _deleteSessionUseCase.execute(item.id);
   }
+
+  Future<Result<void>> updateSession(
+      SessionView sessionView, Map<String, dynamic> sessionData) {
+    final session = sessionView.toDomain();
+    return _updateSessionUseCase.execute(session, sessionData);
+  }
+
 }

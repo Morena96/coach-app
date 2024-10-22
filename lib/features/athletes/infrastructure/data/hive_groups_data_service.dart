@@ -82,4 +82,9 @@ class HiveGroupsDataService extends GroupsService {
 
     return group;
   }
+
+  @override
+  Future<void> initializeDatabase() {
+    throw UnimplementedError();
+  }
 }

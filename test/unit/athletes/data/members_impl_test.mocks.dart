@@ -228,6 +228,24 @@ class MockMembersService extends _i1.Mock implements _i3.MembersService {
       ) as _i4.Future<List<_i2.Member>>);
 
   @override
+  _i4.Future<List<_i2.Member>> batchAddGroupsToMember(
+    String? athleteId,
+    List<String>? groupIds,
+    _i5.GroupRole? role,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #batchAddGroupsToMember,
+          [
+            athleteId,
+            groupIds,
+            role,
+          ],
+        ),
+        returnValue: _i4.Future<List<_i2.Member>>.value(<_i2.Member>[]),
+      ) as _i4.Future<List<_i2.Member>>);
+
+  @override
   _i4.Future<void> batchRemoveMembersFromGroup(
     String? groupId,
     List<String>? memberIds,
@@ -331,4 +349,20 @@ class MockLoggerRepository extends _i1.Mock implements _i6.LoggerRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i4.Future<List<_i7.LogEntry>> getLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i4.Future<List<_i7.LogEntry>>.value(<_i7.LogEntry>[]),
+      ) as _i4.Future<List<_i7.LogEntry>>);
 }

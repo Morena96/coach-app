@@ -264,6 +264,22 @@ class MockLoggerRepository extends _i1.Mock implements _i9.LoggerRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i5.Future<List<_i10.LogEntry>> getLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i5.Future<List<_i10.LogEntry>>.value(<_i10.LogEntry>[]),
+      ) as _i5.Future<List<_i10.LogEntry>>);
 }
 
 /// A class which mocks [MembersService].
@@ -452,6 +468,24 @@ class MockMembersService extends _i1.Mock implements _i11.MembersService {
           [
             groupId,
             athleteIds,
+            role,
+          ],
+        ),
+        returnValue: _i5.Future<List<_i3.Member>>.value(<_i3.Member>[]),
+      ) as _i5.Future<List<_i3.Member>>);
+
+  @override
+  _i5.Future<List<_i3.Member>> batchAddGroupsToMember(
+    String? athleteId,
+    List<String>? groupIds,
+    _i12.GroupRole? role,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #batchAddGroupsToMember,
+          [
+            athleteId,
+            groupIds,
             role,
           ],
         ),

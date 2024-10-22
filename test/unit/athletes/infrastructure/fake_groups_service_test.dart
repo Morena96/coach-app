@@ -1,4 +1,5 @@
 import 'package:domain/features/athletes/data/sports_service.dart';
+import 'package:domain/features/athletes/entities/athlete.dart';
 import 'package:domain/features/athletes/entities/group.dart';
 import 'package:domain/features/athletes/entities/sport.dart';
 import 'package:domain/features/athletes/value_objects/groups_filter_criteria.dart';
@@ -18,15 +19,18 @@ import 'package:coach_app/features/athletes/infrastructure/services/fake_groups_
   AvatarRepository,
 ])
 import 'fake_groups_service_test.mocks.dart';
+import 'fake_members_service_test.mocks.dart';
 
 void main() {
   late FakeGroupsService fakeGroupsService;
   late MockSportsService mockSportsService;
+  late MockAthletesService mockAthletesService;
   late MockAvatarGeneratorService mockAvatarGeneratorService;
   late MockAvatarRepository mockAvatarRepository;
 
   setUp(() async {
     mockSportsService = MockSportsService();
+    mockAthletesService = MockAthletesService();
     mockAvatarGeneratorService = MockAvatarGeneratorService();
     mockAvatarRepository = MockAvatarRepository();
 
@@ -35,6 +39,14 @@ void main() {
           const Sport(id: '2', name: 'Basketball'),
           const Sport(id: '3', name: 'Tennis'),
         ]);
+
+    // Mock the getAllAthletes method
+    when(mockAthletesService.getAllAthletes()).thenAnswer((_) async => const [
+          Athlete(id: 'athlete1', name: 'John Doe'),
+          Athlete(id: 'athlete2', name: 'Jane Smith'),
+          Athlete(id: 'athlete3', name: 'Mike Johnson'),
+        ]);
+
     when(mockAvatarGeneratorService.generateAvatar()).thenReturn('fake_avatar');
     when(mockAvatarRepository.saveAvatar(any, any)).thenAnswer((_) async =>
         Avatar(
@@ -44,7 +56,12 @@ void main() {
             syncStatus: SyncStatus.synced));
 
     fakeGroupsService = FakeGroupsService(
-        mockAvatarGeneratorService, mockAvatarRepository, mockSportsService);
+      mockAvatarGeneratorService,
+      mockAvatarRepository,
+      mockSportsService,
+    );
+
+    await fakeGroupsService.initializeDatabase();
   });
 
   group('FakeGroupsService', () {
@@ -96,7 +113,6 @@ void main() {
       const newGroup = Group(
         id: 'new_id',
         name: 'New Group',
-        members: [],
         avatarId: 'fake_avatar_id',
         sport: Sport(id: '1', name: 'Football'),
       );
@@ -121,7 +137,6 @@ void main() {
       const nonExistentGroup = Group(
         id: 'non_existent_id',
         name: 'Non-existent Group',
-        members: [],
         avatarId: 'fake_avatar_id',
         sport: Sport(id: '1', name: 'Football'),
       );

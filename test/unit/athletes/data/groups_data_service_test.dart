@@ -27,7 +27,7 @@ void main() {
 
   group('GroupsDataService', () {
     test('createGroup should add group to the box', () async {
-      const group = Group(id: '1', name: 'Test Group', members: []);
+      const group = Group(id: '1', name: 'Test Group');
 
       when(mockBox.put('1', any)).thenAnswer((_) => Future.value());
 
@@ -39,8 +39,8 @@ void main() {
 
     test('getAllGroups should return all groups from the box', () async {
       final groups = [
-        HiveGroup(id: '1', name: 'Group 1', members: []),
-        HiveGroup(id: '2', name: 'Group 2', members: []),
+        HiveGroup(id: '1', name: 'Group 1'),
+        HiveGroup(id: '2', name: 'Group 2'),
       ];
       when(mockBox.values).thenReturn(groups);
 
@@ -52,7 +52,7 @@ void main() {
     });
 
     test('getGroupById should return the correct group', () async {
-      final group = HiveGroup(id: '1', name: 'Test Group', members: []);
+      final group = HiveGroup(id: '1', name: 'Test Group');
       when(mockBox.get('1')).thenReturn(group);
 
       final result = await dataService.getGroupById('1');
@@ -72,8 +72,8 @@ void main() {
 
     test('getGroupsByFilterCriteria should return filtered groups', () async {
       final groups = [
-        HiveGroup(id: '1', name: 'Test Group 1', members: []),
-        HiveGroup(id: '2', name: 'Another Group', members: []),
+        HiveGroup(id: '1', name: 'Test Group 1'),
+        HiveGroup(id: '2', name: 'Another Group'),
       ];
       when(mockBox.values).thenReturn(groups);
 
@@ -89,8 +89,8 @@ void main() {
     test('getGroupsByFilterCriteria should return all groups when no criteria',
         () async {
       final groups = [
-        HiveGroup(id: '1', name: 'Test Group 1', members: []),
-        HiveGroup(id: '2', name: 'Another Group', members: []),
+        HiveGroup(id: '1', name: 'Test Group 1'),
+        HiveGroup(id: '2', name: 'Another Group'),
       ];
       when(mockBox.values).thenReturn(groups);
 
@@ -104,7 +104,7 @@ void main() {
       final groups = List.generate(
         20,
         (index) =>
-            HiveGroup(id: index.toString(), name: 'Group $index', members: []),
+            HiveGroup(id: index.toString(), name: 'Group $index'),
       );
       when(mockBox.values).thenReturn(groups);
 
@@ -120,7 +120,7 @@ void main() {
       final groups = List.generate(
         5,
         (index) =>
-            HiveGroup(id: index.toString(), name: 'Group $index', members: []),
+            HiveGroup(id: index.toString(), name: 'Group $index'),
       );
       when(mockBox.values).thenReturn(groups);
 
@@ -130,7 +130,7 @@ void main() {
     });
 
     test('updateGroup should update the group in the box', () async {
-      const group = Group(id: '1', name: 'Updated Group', members: []);
+      const group = Group(id: '1', name: 'Updated Group');
 
       when(mockBox.put('1', any)).thenAnswer((_) => Future.value());
 

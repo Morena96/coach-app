@@ -67,6 +67,15 @@ class HiveLoggerManagerImpl implements LogPersistenceManager {
     await _box.deleteAll(keysToDelete);
   }
 
+  @override
+  Future<List<LogEntry>> readLogsByPage(int page, int pageSize) async {
+    return _box.values
+        .skip(page * pageSize)
+        .take(pageSize)
+        .map(_convertHiveLogEntryToLogEntry)
+        .toList();
+  }
+
   LogEntry _convertHiveLogEntryToLogEntry(HiveLogEntry hiveEntry) {
     return LogEntry(
       level: LogLevel.values[hiveEntry.level.index],

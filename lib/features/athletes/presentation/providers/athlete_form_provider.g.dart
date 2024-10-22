@@ -6,7 +6,7 @@ part of 'athlete_form_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$athleteFormHash() => r'5065624ea1d338520b6cf095f8ee4936f0e5a769';
+String _$athleteFormHash() => r'1199696a62359c6ae91afd9f15930939a436ac3b';
 
 /// See also [AthleteForm].
 @ProviderFor(AthleteForm)

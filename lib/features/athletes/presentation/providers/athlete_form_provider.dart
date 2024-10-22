@@ -1,5 +1,3 @@
-import 'package:domain/features/athletes/entities/athlete.dart';
-import 'package:domain/features/athletes/entities/sport.dart';
 import 'package:domain/features/avatars/entities/avatar_status.dart';
 import 'package:domain/features/avatars/entities/image_data.dart';
 import 'package:domain/features/shared/utilities/result.dart';
@@ -84,14 +82,7 @@ class AthleteForm extends _$AthleteForm {
     }
 
     final result = await athletesViewModel.updateAthlete(
-      Athlete(
-        id: athlete.id,
-        name: athlete.name,
-        sports: state.sports
-            .map((sport) => Sport(id: sport.id, name: sport.name))
-            .toList(),
-        avatarId: athlete.avatarPath,
-      ),
+      athlete.toDomain(),
       athleteData,
       shouldUpdateAvatar ? state.avatar : null,
     );

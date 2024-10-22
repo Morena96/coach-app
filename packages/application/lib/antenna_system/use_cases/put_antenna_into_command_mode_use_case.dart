@@ -5,7 +5,7 @@ class PutAntennaIntoCommandModeUseCase {
 
   PutAntennaIntoCommandModeUseCase(this.stateMachine);
 
-  Future<bool> execute() async {
-    return await stateMachine.transitionToCommandMode();
+  Future<bool> execute(String portName) async {
+    return await stateMachine.transitionToCommandMode(portName);
   }
 }

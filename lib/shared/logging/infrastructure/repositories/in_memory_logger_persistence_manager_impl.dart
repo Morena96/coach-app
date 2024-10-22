@@ -40,4 +40,9 @@ class InMemoryLoggerPersistenceManagerImpl implements LogPersistenceManager {
   Future<void> deleteOldLogs(DateTime cutoffDate) async {
     _logs.removeWhere((entry) => entry.timestamp.isBefore(cutoffDate));
   }
+
+  @override
+  Future<List<LogEntry>> readLogsByPage(int page, int pageSize) async {
+    return _logs.skip(page * pageSize).take(pageSize).toList();
+  }
 }

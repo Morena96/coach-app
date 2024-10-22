@@ -1,6 +1,3 @@
-import 'package:coach_app/features/hello_world/presentation/pages/map_page.dart';
-import 'package:coach_app/features/sessions/presentation/pages/sessions_page.dart';
-import 'package:coach_app/features/sessions/presentation/models/session_with_group_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,17 +10,20 @@ import 'package:coach_app/features/antenna_system/presentation/pages/antenna_sys
 import 'package:coach_app/features/athletes/presentation/models/athlete_view.dart';
 import 'package:coach_app/features/athletes/presentation/models/group_view.dart';
 import 'package:coach_app/features/athletes/presentation/pages/athlete_form_page.dart';
-import 'package:coach_app/features/athletes/presentation/pages/athlete_view_page.dart';
+import 'package:coach_app/features/athletes/presentation/pages/athlete_profile_page.dart';
 import 'package:coach_app/features/athletes/presentation/pages/athletes_page.dart';
 import 'package:coach_app/features/athletes/presentation/pages/group_form_page.dart';
 import 'package:coach_app/features/athletes/presentation/pages/group_view_page.dart';
 import 'package:coach_app/features/athletes/presentation/pages/groups_page.dart';
 import 'package:coach_app/features/auth/presentation/pages/login_page.dart';
 import 'package:coach_app/features/hello_world/hello_world.dart';
+import 'package:coach_app/features/hello_world/presentation/pages/map_page.dart';
+import 'package:coach_app/features/hello_world/presentation/pages/playback_timer_demo_page.dart';
 import 'package:coach_app/features/hello_world/presentation/pages/view_sample_gps_data.dart';
 import 'package:coach_app/features/home/home.dart';
 import 'package:coach_app/features/other/not_found_screen.dart';
 import 'package:coach_app/features/sessions/presentation/models/session_view.dart';
+import 'package:coach_app/features/sessions/presentation/models/session_with_group_view.dart';
 import 'package:coach_app/features/sessions/presentation/pages/session_view_page.dart';
 import 'package:coach_app/features/sessions/presentation/pages/sessions_page.dart';
 import 'package:coach_app/features/settings/presentation/pages/settings_page.dart';
@@ -57,6 +57,12 @@ GoRouter goRouter(GoRouterRef ref) {
         path: Routes.map.path,
         name: Routes.map.name,
         builder: (BuildContext context, GoRouterState state) => const MapPage(),
+      ),
+      fadeGoRoute(
+        path: Routes.timer.path,
+        name: Routes.timer.name,
+        builder: (BuildContext context, GoRouterState state) =>
+            const PlaybackTimerDemoPage(),
       ),
       fadeGoRoute(
         path: Routes.viewSampleGpsData.path,
@@ -150,7 +156,7 @@ GoRouter goRouter(GoRouterRef ref) {
                 name: Routes.athleteDetails.name,
                 builder: (context, state) {
                   final id = state.pathParameters['id'] ?? '';
-                  return AthleteViewPage(
+                  return AthleteProfilePage(
                     athleteId: id,
                     athleteName:
                         (state.extra as Map<String, String>?)?['athleteName'] ??

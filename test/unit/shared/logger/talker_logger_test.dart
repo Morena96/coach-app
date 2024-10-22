@@ -138,5 +138,62 @@ void main() {
       verify(mockTalker.error('Error message', error, stackTrace)).called(1);
     });
 
+    test('getLogsByPage calls LogPersistenceManager.readLogsByPage', () async {
+      const page = 0;
+      const pageSize = 10;
+      final mockLogs = List.generate(
+        pageSize,
+        (index) => domain_logs.LogEntry(
+          level: domain_logs.LogLevel.info,
+          message: 'Log $index',
+          timestamp: DateTime.now(),
+        ),
+      );
+
+      when(mockPersistenceManager.readLogsByPage(page, pageSize))
+          .thenAnswer((_) async => mockLogs);
+
+      final result = await talkerLogger.getLogsByPage(page, pageSize);
+
+      verify(mockPersistenceManager.readLogsByPage(page, pageSize)).called(1);
+      expect(result, equals(mockLogs));
+    });
+
+    test('getLogsByPage returns empty list when no logs are available', () async {
+      const page = 0;
+      const pageSize = 10;
+
+      when(mockPersistenceManager.readLogsByPage(page, pageSize))
+          .thenAnswer((_) async => []);
+
+      final result = await talkerLogger.getLogsByPage(page, pageSize);
+
+      verify(mockPersistenceManager.readLogsByPage(page, pageSize)).called(1);
+      expect(result, isEmpty);
+    });
+
+    test('getLogsByPage handles different page sizes', () async {
+      const page = 1;
+      const pageSize = 5;
+      final mockLogs = List.generate(
+        pageSize,
+        (index) => domain_logs.LogEntry(
+          level: domain_logs.LogLevel.info,
+          message: 'Log ${index + pageSize}',
+          timestamp: DateTime.now(),
+        ),
+      );
+
+      when(mockPersistenceManager.readLogsByPage(page, pageSize))
+          .thenAnswer((_) async => mockLogs);
+
+      final result = await talkerLogger.getLogsByPage(page, pageSize);
+
+      verify(mockPersistenceManager.readLogsByPage(page, pageSize)).called(1);
+      expect(result.length, equals(pageSize));
+      expect(result.first.message, equals('Log 5'));
+      expect(result.last.message, equals('Log 9'));
+    });
+
   });
 }

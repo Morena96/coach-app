@@ -18,21 +18,21 @@ void main() {
     });
 
     test('should call transitionToCommandMode on state machine', () async {
-      when(mockStateMachine.transitionToCommandMode()).thenAnswer((_) async => true);
+      when(mockStateMachine.transitionToCommandMode('port1')).thenAnswer((_) async => true);
 
-      final result = await useCase.execute();
+      final result = await useCase.execute('port1');
 
       expect(result, true);
-      verify(mockStateMachine.transitionToCommandMode()).called(1);
+      verify(mockStateMachine.transitionToCommandMode('port1')).called(1);
     });
 
     test('should return false when transition fails', () async {
-      when(mockStateMachine.transitionToCommandMode()).thenAnswer((_) async => false);
+      when(mockStateMachine.transitionToCommandMode('port1')).thenAnswer((_) async => false);
 
-      final result = await useCase.execute();
+      final result = await useCase.execute('port1');
 
       expect(result, false);
-      verify(mockStateMachine.transitionToCommandMode()).called(1);
+      verify(mockStateMachine.transitionToCommandMode('port1')).called(1);
     });
   });
 }

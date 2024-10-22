@@ -8,13 +8,22 @@ import 'package:domain/features/logging/repositories/logger.dart';
 import 'package:domain/features/shared/utilities/result.dart';
 import 'package:domain/features/shared/value_objects/filter_criteria.dart';
 
+/// Implementation of the Athletes repository that handles athlete-related operations
+/// with error handling and logging capabilities.
 class AthletesImpl extends Athletes {
   final AthletesService _dataService;
   final LoggerRepository _loggerRepository;
   final MembersService _membersService;
 
+  /// Creates a new instance of [AthletesImpl].
+  ///
+  /// Requires [AthletesService] for data operations, [LoggerRepository] for logging,
+  /// and [MembersService] for member-related operations.
   AthletesImpl(this._dataService, this._loggerRepository, this._membersService);
 
+  /// Retrieves athletes based on provided filter criteria.
+  ///
+  /// Returns a [Result] containing either a list of athletes or an error message.
   @override
   Future<Result<List<Athlete>>> getAthletesByFilterCriteria(
       FilterCriteria filterCriteria) async {
@@ -28,11 +37,15 @@ class AthletesImpl extends Athletes {
     }
   }
 
+  /// Creates a new athlete record.
+  ///
+  /// Returns a [Result] containing either the created athlete or an error message.
   @override
   Future<Result<Athlete>> addAthlete(Athlete athlete) async {
     try {
       final response = await _dataService.createAthlete(athlete);
-      _loggerRepository.info('Athlete created: ${athlete.name} with ID: ${response.id}');
+      _loggerRepository
+          .info('Athlete created: ${athlete.name} with ID: ${response.id}');
       return Result.success(response);
     } catch (e) {
       _loggerRepository.error(e.toString());
@@ -40,6 +53,9 @@ class AthletesImpl extends Athletes {
     }
   }
 
+  /// Deletes an athlete by their ID.
+  ///
+  /// Returns a [Result] indicating success or failure.
   @override
   Future<Result<void>> deleteAthlete(String id) async {
     try {
@@ -51,6 +67,9 @@ class AthletesImpl extends Athletes {
     }
   }
 
+  /// Retrieves all athletes.
+  ///
+  /// Returns a [Result] containing either a list of all athletes or an error message.
   @override
   Future<Result<List<Athlete>>> getAllAthletes() async {
     try {
@@ -62,6 +81,9 @@ class AthletesImpl extends Athletes {
     }
   }
 
+  /// Retrieves a specific athlete by their ID.
+  ///
+  /// Returns a [Result] containing either the athlete or an error message.
   @override
   Future<Result<Athlete>> getAthleteById(String id) async {
     try {
@@ -73,6 +95,10 @@ class AthletesImpl extends Athletes {
     }
   }
 
+  /// Retrieves a paginated list of athletes with optional filtering and sorting.
+  ///
+  /// Enriches athletes with their group information from [MembersService].
+  /// Returns a [Result] containing either the paginated list or an error message.
   @override
   Future<Result<List<Athlete>>> getAthletesByPage(
     int page,
@@ -83,16 +109,16 @@ class AthletesImpl extends Athletes {
     try {
       final athletes = await _dataService.getAthletesByPage(page, pageSize,
           filterCriteria: filterCriteria, sortCriteria: sortCriteria);
-      
-      // Get all athlete IDs
+
       final athleteIds = athletes.map((athlete) => athlete.id).toList();
+      final groupsForAthletes =
+          await _membersService.getGroupsForAthletes(athleteIds);
 
-      // Get groups for all athletes
-      final groupsForAthletes = await _membersService.getGroupsForAthletes(athleteIds);
-
-      // Attach groups to each athlete
       final athletesWithGroups = athletes.map((athlete) {
-        final groups = groupsForAthletes[athlete.id]?.map((member) => member.groupId).toList() ?? [];
+        final groups = groupsForAthletes[athlete.id]
+                ?.map((member) => member.groupId)
+                .toList() ??
+            [];
         return athlete.copyWith(groups: groups);
       }).toList();
 
@@ -103,6 +129,9 @@ class AthletesImpl extends Athletes {
     }
   }
 
+  /// Updates an existing athlete's information.
+  ///
+  /// Returns a [Result] indicating success or failure.
   @override
   Future<Result<void>> updateAthlete(Athlete athlete) async {
     try {
@@ -114,6 +143,9 @@ class AthletesImpl extends Athletes {
     }
   }
 
+  /// Retrieves multiple athletes by their IDs.
+  ///
+  /// Returns a [Result] containing either the list of athletes or an error message.
   @override
   Future<Result<List<Athlete>>> getAthletesByIds(List<String> ids) async {
     try {
@@ -125,6 +157,9 @@ class AthletesImpl extends Athletes {
     }
   }
 
+  /// Restores a previously deleted athlete by their ID.
+  ///
+  /// Returns a [Result] indicating success or failure.
   @override
   Future<Result<void>> restoreAthlete(String id) async {
     try {

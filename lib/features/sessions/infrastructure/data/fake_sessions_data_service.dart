@@ -263,8 +263,7 @@ class SessionFactory {
       assignedGroup: group ??
           Group(
               id: _faker.guid.guid(),
-              name: _faker.company.name(),
-              members: const []),
+              name: _faker.company.name()),
       selectedAthletes: athletes ??
           List.generate(
             _faker.randomGenerator.integer(10, min: 1),

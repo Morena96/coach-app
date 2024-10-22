@@ -13,6 +13,7 @@ import 'package:domain/features/antenna_system/state_machine/antenna_context.dar
 import 'package:domain/features/antenna_system/state_machine/antenna_state_factory.dart';
 import 'package:domain/features/antenna_system/state_machine/antenna_state_factory_impl.dart';
 import 'package:domain/features/antenna_system/value_objects/antenna_config.dart';
+import 'package:domain/features/shared/utilities/binary_utils/binary_utils.dart';
 import 'package:domain/features/shared/utilities/reactive_stream.dart';
 
 /// AntennaStateMachine is a state machine that manages the state of the antenna system.
@@ -66,14 +67,20 @@ class AntennaStateMachine {
     _currentState.sendCommand(command);
   }
 
+  void _sendCommandToPort(Command command, String portName) {
+    _currentState.sendCommandToPort(command, portName);
+  }
+
   void _sendCommandToAll(Command command) {
     var frame = Frame.fromCommand(command, _context.parsingStrategy);
+    var binary = frame.toBinary(_context.parsingStrategy);
+
     _context.repository
-        .sendCommandToAll(frame.toBinary(_context.parsingStrategy));
+        .sendCommandToAll(BinaryUtils.padBinary(binary));
   }
 
   Future<bool> _sendCommandAndWaitForAck(
-      Command command, Type expectedAckType) async {
+      Command command, Type expectedAckType, String portName) async {
     if (_pendingAcks.containsKey(expectedAckType)) {
       throw StateError(
           'Already waiting for an acknowledgment of type $expectedAckType');
@@ -83,9 +90,9 @@ class AntennaStateMachine {
     _pendingAcks[expectedAckType] = completer;
 
     var frame = Frame.fromCommand(command, _context.parsingStrategy);
+    var binary = frame.toBinary(_context.parsingStrategy);
 
-    await _context.repository
-        .sendCommandToAll(frame.toBinary(_context.parsingStrategy));
+    await _context.repository.sendCommand(portName, binary);
 
     try {
       return await completer.future.timeout(_timeout);
@@ -96,13 +103,13 @@ class AntennaStateMachine {
     }
   }
 
-  Future<bool> transitionToCommandMode() async {
+  Future<bool> transitionToCommandMode(String portName) async {
     if (_currentState is CommandModeState) return true;
 
     setState(_antennaStateFactory.createState(
         StateType.pendingCommandMode, _context));
     bool success = await _sendCommandAndWaitForAck(
-        ModeCommandCommand(), ModeCommandCommand);
+        ModeCommandCommand(), ModeCommandCommand, portName);
 
     if (success) {
       setState(
@@ -114,13 +121,13 @@ class AntennaStateMachine {
     }
   }
 
-  Future<bool> transitionToLiveMode() async {
+  Future<bool> transitionToLiveMode(String portName) async {
     if (_currentState is LiveModeState) return true;
 
     setState(
         _antennaStateFactory.createState(StateType.pendingLiveMode, _context));
     bool success =
-        await _sendCommandAndWaitForAck(ModeLiveCommand(), ModeLiveCommand);
+        await _sendCommandAndWaitForAck(ModeLiveCommand(), ModeLiveCommand, portName);
 
     if (success) {
       setState(_antennaStateFactory.createState(StateType.liveMode, _context));
@@ -132,7 +139,7 @@ class AntennaStateMachine {
     }
   }
 
-  Future<bool> setConfig(AntennaConfig config) async {
+  Future<bool> setConfig(AntennaConfig config, String portName) async {
     if (_currentState is! CommandModeState) {
       _context.logger.warning('Cannot set config when not in CommandModeState');
       return false;
@@ -150,7 +157,7 @@ class AntennaStateMachine {
           config.clubId, // Default value, should be updated with actual club ID
     );
     bool success =
-        await _sendCommandAndWaitForAck(setConfigCommand, SetConfigCommand);
+        await _sendCommandAndWaitForAck(setConfigCommand, SetConfigCommand, portName);
 
     if (success) {
       _context.logger.info('Config set successfully');
@@ -161,7 +168,7 @@ class AntennaStateMachine {
     }
   }
 
-  void setAllPodsToLive() async {
+  void setAllPodsToLive(String portName) async {
     if (_currentState is! LiveModeState) {
       _context.logger
           .warning('Cannot set pod config when not in LiveModeState');
@@ -171,7 +178,33 @@ class AntennaStateMachine {
     var setConfigCommand = SetStateCommand(
         rfSlotStates: List.generate(15, (_) => SensorMode.live));
 
-    _sendCommandToAll(setConfigCommand);
+    _sendCommandToPort(setConfigCommand, portName);
+  }
+
+  void setAllPodsToStandby(String portName) async {
+    if (_currentState is! LiveModeState) {
+      _context.logger
+          .warning('Cannot set pod config when not in LiveModeState');
+        return;
+    }
+
+    var setConfigCommand = SetStateCommand(
+        rfSlotStates: List.generate(15, (_) => SensorMode.standBy));
+
+    _sendCommandToPort(setConfigCommand, portName);
+  }
+
+  void setAllPodsToDownload(String portName) async {
+    if (_currentState is! LiveModeState) {
+      _context.logger
+          .warning('Cannot set pod config when not in LiveModeState');
+        return;
+    }
+
+    var setConfigCommand = SetStateCommand(
+        rfSlotStates: List.generate(15, (_) => SensorMode.download));
+
+    _sendCommandToPort(setConfigCommand, portName);
   }
 
   /// Sets the state of the state machine.

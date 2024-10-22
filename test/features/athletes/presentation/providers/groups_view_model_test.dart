@@ -90,7 +90,7 @@ void main() {
     });
 
     test('convertItem correctly converts Group to GroupView', () {
-      const group = Group(id: '1', name: 'Test Group', members: []);
+      const group = Group(id: '1', name: 'Test Group');
       final groupView = groupsViewModel.convertItem(group);
 
       expect(groupView, isA<GroupView>());
@@ -100,7 +100,7 @@ void main() {
 
     test('deleteItemFromService calls deleteGroupUseCase with correct id',
         () async {
-      const groupView = GroupView(id: '1', name: 'Test Group', members: []);
+      const groupView = GroupView(id: '1', name: 'Test Group');
       when(mockDeleteGroupUseCase.execute(any))
           .thenAnswer((_) async => Result.success(null));
 
@@ -117,7 +117,7 @@ void main() {
     test('getGroupById calls getGroupByIdUseCase', () async {
       when(mockGetGroupByIdUseCase.execute(any)).thenAnswer((_) async =>
           Result.success(
-              const Group(id: '1', name: 'Test Group', members: [])));
+              const Group(id: '1', name: 'Test Group')));
 
       await groupsViewModel.getGroupById('1');
 

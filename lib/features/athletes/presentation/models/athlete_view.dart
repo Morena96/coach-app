@@ -36,3 +36,17 @@ class AthleteView extends Equatable {
   @override
   List<Object?> get props => [id];
 }
+
+extension AthleteViewX on AthleteView {
+  /// Converts an AthleteView to an Athlete domain entity
+  Athlete toDomain() {
+    return Athlete(
+      id: id,
+      name: name,
+      avatarId: avatarPath.isNotEmpty ? avatarPath : null,
+      sports: sports?.map((sportView) => sportView.toDomain()).toList(),
+      archived: archived,
+      groups: groups,
+    );
+  }
+}

@@ -40,6 +40,10 @@ abstract class MembersService {
   Future<List<Member>> batchAddMembersToGroup(
       String groupId, List<String> athleteIds, GroupRole role);
 
+  /// Add multiple groups to a member in a single operation
+  Future<List<Member>> batchAddGroupsToMember(
+      String athleteId, List<String> groupIds, GroupRole role);
+
   /// Remove multiple members from a group in a single operation
   Future<void> batchRemoveMembersFromGroup(
       String groupId, List<String> memberIds);
@@ -52,7 +56,8 @@ abstract class MembersService {
   /// [athleteIds] A list of athlete IDs to fetch groups for
   ///
   /// Returns a Future that resolves to a Map<String, List<Member>>
-  Future<Map<String, List<Member>>> getGroupsForAthletes(List<String> athleteIds);
+  Future<Map<String, List<Member>>> getGroupsForAthletes(
+      List<String> athleteIds);
 
   Future<Map<String, bool>> areAthletesMembersOfGroup(
     List<String> athleteIds,

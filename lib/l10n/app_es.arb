@@ -57,6 +57,7 @@
   "modeCommand": "Modo comando",
   "setConfigRandomData": "Establecer configuración (datos aleatorios)",
   "setAllPodsToLive": "Establecer todos los pods en vivo",
+  "setAllPodsToStandby": "Establecer todos los pods en espera",
   "startCalibration": "Iniciar calibración",
   "antennaState": "Estado de la antena: {state}",
   "currentState": "Estado actual: {state}",
@@ -231,5 +232,29 @@
   "dSession": "Sesión D",
   "recoveryTime": "Tiempo de recuperación",
   "acceleration": "Aceleración",
-  "sessions": "Sesiones"
+  "sessions": "Sesiones",
+  "errorOnLoadingLogs": "Se produjo un error al cargar los registros",
+  "errorOnLoadingMoreLogs": "Se produjo un error al cargar más registros",
+  "noLogs": "No se encontraron registros",
+  "pleaseEnterValue": "Por favor, ingrese un valor",
+  "pleaseEnterValidNumber": "Por favor, ingrese un número válido",
+  "masterId": "ID del maestro",
+  "frequency": "Frecuencia",
+  "mainFrequency": "Frecuencia principal",
+  "isMain": "Es principal",
+  "clubId": "ID del club",
+  "submit": "Enviar",
+  "setConfig": "Establecer configuración",
+  "sessionTitle": "Título de la sesión",
+  "pleaseEnterSessionTitle": "Por favor, ingrese el título de la sesión",
+  "sessionUpdated": "Sesión actualizada",
+  "failedToUpdateSession": "Error al actualizar la sesión",
+  "selectSport": "Seleccionar un deporte",
+  "mapView": "Vista de mapa",
+  "athleteWillBeAddedToTheGroup": "{name} será añadido al grupo(s)",
+  "selectGroup": "Seleccionar grupo(s)",
+  "athleteAddedToTheGroups": "{name} añadido exitosamente",
+  "findGroups": "Buscar grupo(s)"
+
+
 }

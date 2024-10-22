@@ -146,6 +146,16 @@ class MockGroupsService extends _i1.Mock implements _i3.GroupsService {
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),
       ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> initializeDatabase() => (super.noSuchMethod(
+        Invocation.method(
+          #initializeDatabase,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }
 
 /// A class which mocks [LoggerRepository].
@@ -206,6 +216,22 @@ class MockLoggerRepository extends _i1.Mock implements _i7.LoggerRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i4.Future<List<_i8.LogEntry>> getLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i4.Future<List<_i8.LogEntry>>.value(<_i8.LogEntry>[]),
+      ) as _i4.Future<List<_i8.LogEntry>>);
 }
 
 /// A class which mocks [IdGenerator].

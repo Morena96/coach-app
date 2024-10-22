@@ -25,6 +25,8 @@ abstract class Members {
 
   Future<Result<List<Member>>> batchAddMembersToGroup(String groupId, List<String> athleteIds, GroupRole role);
 
+  Future<Result<List<Member>>> batchAddGroupsToMember(String athleteId, List<String> groupIds, GroupRole role);
+
   Future<Result<void>> batchRemoveMembersFromGroup(String groupId, List<String> memberIds);
 
   Future<Result<Map<String, bool>>> areAthletesMembersOfGroup(

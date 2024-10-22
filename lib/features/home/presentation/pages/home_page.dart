@@ -38,6 +38,11 @@ class HomePage extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                onPressed: () => context.pushNamed(Routes.timer.name),
+                child: const Text('Timer Demo'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
                 onPressed: () =>
                     context.pushNamed(Routes.viewSampleGpsData.name),
                 child: Text(context.l10n.viewSampleGpsData),

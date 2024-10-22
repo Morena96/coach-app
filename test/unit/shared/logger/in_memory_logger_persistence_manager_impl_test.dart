@@ -88,5 +88,59 @@ void main() {
       expect(logs.length, 1);
       expect(logs.first.message, 'Recent log');
     });
+
+    test('readLogsByPage should return correct logs for each page', () async {
+      // Populate the log with 25 entries
+      for (int i = 0; i < 25; i++) {
+        await persistenceManager.writeLog(LogEntry(
+          level: LogLevel.info,
+          message: 'Log $i',
+          timestamp: DateTime.now(),
+        ));
+      }
+
+      // Test first page (0-based index)
+      final firstPage = await persistenceManager.readLogsByPage(0, 10);
+      expect(firstPage.length, 10);
+      expect(firstPage.first.message, 'Log 0');
+      expect(firstPage.last.message, 'Log 9');
+
+      // Test second page
+      final secondPage = await persistenceManager.readLogsByPage(1, 10);
+      expect(secondPage.length, 10);
+      expect(secondPage.first.message, 'Log 10');
+      expect(secondPage.last.message, 'Log 19');
+
+      // Test last page (partial)
+      final lastPage = await persistenceManager.readLogsByPage(2, 10);
+      expect(lastPage.length, 5);
+      expect(lastPage.first.message, 'Log 20');
+      expect(lastPage.last.message, 'Log 24');
+
+      // Test empty page
+      final emptyPage = await persistenceManager.readLogsByPage(3, 10);
+      expect(emptyPage.isEmpty, true);
+    });
+
+    test('readLogsByPage should handle empty log list', () async {
+      final emptyPage = await persistenceManager.readLogsByPage(0, 10);
+      expect(emptyPage.isEmpty, true);
+    });
+
+    test('readLogsByPage should handle page size larger than total logs', () async {
+      // Add 5 logs
+      for (int i = 0; i < 5; i++) {
+        await persistenceManager.writeLog(LogEntry(
+          level: LogLevel.info,
+          message: 'Log $i',
+          timestamp: DateTime.now(),
+        ));
+      }
+
+      final page = await persistenceManager.readLogsByPage(0, 10);
+      expect(page.length, 5);
+      expect(page.first.message, 'Log 0');
+      expect(page.last.message, 'Log 4');
+    });
   });
 }

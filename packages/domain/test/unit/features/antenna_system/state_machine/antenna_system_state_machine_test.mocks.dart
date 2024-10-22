@@ -205,37 +205,64 @@ class MockAntennaStateMachine extends _i1.Mock
       );
 
   @override
-  _i8.Future<bool> transitionToCommandMode() => (super.noSuchMethod(
+  _i8.Future<bool> transitionToCommandMode(String? portName) =>
+      (super.noSuchMethod(
         Invocation.method(
           #transitionToCommandMode,
-          [],
+          [portName],
         ),
         returnValue: _i8.Future<bool>.value(false),
       ) as _i8.Future<bool>);
 
   @override
-  _i8.Future<bool> transitionToLiveMode() => (super.noSuchMethod(
+  _i8.Future<bool> transitionToLiveMode(String? portName) =>
+      (super.noSuchMethod(
         Invocation.method(
           #transitionToLiveMode,
-          [],
+          [portName],
         ),
         returnValue: _i8.Future<bool>.value(false),
       ) as _i8.Future<bool>);
 
   @override
-  _i8.Future<bool> setConfig(_i11.AntennaConfig? config) => (super.noSuchMethod(
+  _i8.Future<bool> setConfig(
+    _i11.AntennaConfig? config,
+    String? portName,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #setConfig,
-          [config],
+          [
+            config,
+            portName,
+          ],
         ),
         returnValue: _i8.Future<bool>.value(false),
       ) as _i8.Future<bool>);
 
   @override
-  void setAllPodsToLive() => super.noSuchMethod(
+  void setAllPodsToLive(String? portName) => super.noSuchMethod(
         Invocation.method(
           #setAllPodsToLive,
-          [],
+          [portName],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setAllPodsToStandby(String? portName) => super.noSuchMethod(
+        Invocation.method(
+          #setAllPodsToStandby,
+          [portName],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setAllPodsToDownload(String? portName) => super.noSuchMethod(
+        Invocation.method(
+          #setAllPodsToDownload,
+          [portName],
         ),
         returnValueForMissingStub: null,
       );
@@ -332,6 +359,23 @@ class MockAntennaState extends _i1.Mock implements _i2.AntennaState {
         Invocation.method(
           #sendCommand,
           [command],
+        ),
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
+
+  @override
+  _i8.Future<void> sendCommandToPort(
+    _i7.Command? command,
+    String? portName,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendCommandToPort,
+          [
+            command,
+            portName,
+          ],
         ),
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
@@ -612,6 +656,23 @@ class MockCalibrationState extends _i1.Mock implements _i16.CalibrationState {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
+  @override
+  _i8.Future<void> sendCommandToPort(
+    _i7.Command? command,
+    String? portName,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendCommandToPort,
+          [
+            command,
+            portName,
+          ],
+        ),
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 }
 
 /// A class which mocks [LoggerRepository].
@@ -672,6 +733,22 @@ class MockLoggerRepository extends _i1.Mock implements _i17.LoggerRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i8.Future<List<_i18.LogEntry>> getLogsByPage(
+    int? page,
+    int? pageSize,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLogsByPage,
+          [
+            page,
+            pageSize,
+          ],
+        ),
+        returnValue: _i8.Future<List<_i18.LogEntry>>.value(<_i18.LogEntry>[]),
+      ) as _i8.Future<List<_i18.LogEntry>>);
 }
 
 /// A class which mocks [ReactiveStream].

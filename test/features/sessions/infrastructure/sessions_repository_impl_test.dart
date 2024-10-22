@@ -27,7 +27,7 @@ void main() {
   });
 
   group('SessionsRepositoryImpl', () {
-    const testGroup = Group(id: 'group1', name: 'Test Group', members: []);
+    const testGroup = Group(id: 'group1', name: 'Test Group');
     const testAthlete = Athlete(id: 'athlete1', name: 'Test Athlete');
     const testSport = Sport(id: 'sport1', name: 'Test Sport');
     final testSession = Session(

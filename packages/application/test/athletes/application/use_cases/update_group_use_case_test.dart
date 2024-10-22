@@ -1,7 +1,5 @@
 import 'package:application/athletes/use_cases/update_group_use_case.dart';
 import 'package:domain/features/athletes/entities/group.dart';
-import 'package:domain/features/athletes/entities/group_role.dart';
-import 'package:domain/features/athletes/entities/member.dart';
 import 'package:domain/features/athletes/repositories/groups.dart';
 import 'package:domain/features/athletes/services/group_validation_service.dart';
 import 'package:domain/features/avatars/entities/avatar.dart';
@@ -39,10 +37,7 @@ void main() {
     const group = Group(
       id: '1',
       name: 'Test Group',
-      members: [
-        Member(id: 'm1', athleteId: '1', groupId: '1', role: GroupRole.athlete),
-        Member(id: 'm2', athleteId: '2', groupId: '1', role: GroupRole.athlete),
-      ],
+      
     );
 
     final validGroupData = {
